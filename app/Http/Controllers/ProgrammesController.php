@@ -38,6 +38,23 @@ class ProgrammesController extends Controller
 
         return redirect()->route('programmes.index')->with('success', 'Programme créé avec succès.');
     }
+    public function valider($id)
+    {
+        // Récupérer le programme à valider
+        $programme = Programmes::findOrFail($id);
+
+        // Vérifier si le programme est déjà validé
+        if ($programme->programme_valide) {
+            return redirect()->back()->with('error', 'Ce programme est déjà validé.');
+        }
+
+        // Marquer le programme comme validé
+        $programme->programme_valide = true;
+        $programme->save();
+
+        return redirect()->back()->with('success', 'Le programme a été validé avec succès.');
+    }
+
 
     // Affiche le formulaire de modification d'un programme existant
     public function edit($id)

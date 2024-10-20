@@ -9,7 +9,9 @@
             font-family: DejaVu Sans, sans-serif;
             font-size: 11px
         }
-
+        .page-break {
+            page-break-after: always;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -107,6 +109,7 @@
 </head>
 
 <body>
+
     <!-- Entête avec la date à gauche et SOMELEC / CSMTN à droite -->
     <div class="row bordered">
 

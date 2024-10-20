@@ -16,7 +16,30 @@
                     <p><strong>Date Début : </strong> {{ $programme->date_debut }}</p>
                     <p><strong>Date Fin : </strong> {{ $programme->date_fin }}</p>
                     <p><strong>Code Agent : </strong> {{ $programme->Code_agent }}</p>
-
+                    @if($programme->programme_valide)
+                        @if(!$programme->fiches_generees)
+                            <a href="{{ route('generate-fiches', $programme->idprogrammes) }}" class="btn btn-success">
+                                Générer les fiches
+                            </a>
+                        @else
+                            <button class="btn btn-secondary" disabled>Fiches déjà générées</button>
+                        @endif
+                    @endif
+                    @if($programme->fiches_generees)
+                        <a href="{{ route('download-fiches', $programme->idprogrammes) }}" class="btn btn-success">
+                            Télécharger les fiches
+                        </a>
+                    @else
+                        <button class="btn btn-secondary" disabled>Fiches non générées</button>
+                    @endif
+                    @if(!$programme->programme_valide)
+                        <form action="{{ route('programmes.valider', $programme->idprogrammes) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-success">Valider le programme</button>
+                        </form>
+                    @else
+                        <button class="btn btn-secondary" disabled>Programme déjà validé</button>
+                    @endif
                     <h4>Détails des Compteurs</h4>
                     <table class="table mt-4">
                         <thead>

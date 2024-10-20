@@ -7,6 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::middleware(['auth'])->group(function () {
+    Route::get('programmes/{programme}/abonnes/{abonne}/pdf', [App\Http\Controllers\ProgrammesDetController::class, 'generatePdf'])->name('fichier-pose.pdf');
     Route::resource('programmes', App\Http\Controllers\ProgrammesController::class);
 });
 

@@ -12,6 +12,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('programmes/{programme}/valider', [App\Http\Controllers\ProgrammesController::class, 'valider'])->name('programmes.valider');
     Route::get('programmes/{programme}/download-fiches', [App\Http\Controllers\ProgrammesDetController::class, 'downloadFiches'])->name('download-fiches');
     Route::resource('programmes', App\Http\Controllers\ProgrammesController::class);
+    Route::get('/search-abonnees', [App\Http\Controllers\AbonnesController::class, 'search'])->name('search.abonnees');
+    Route::post('/programmes/{programme}/add-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addProgrammeDet'])->name('add.programmedet');
+
 });
 
 Route::get('/dashboard', function () {

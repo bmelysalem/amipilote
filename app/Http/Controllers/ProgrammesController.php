@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Programmes;
+use App\Models\Abonnes;
 
 class ProgrammesController extends Controller
 {
@@ -55,6 +56,26 @@ class ProgrammesController extends Controller
         return redirect()->back()->with('success', 'Le programme a été validé avec succès.');
     }
 
+    public function addProgrammeDet(Request $request, $programmeId)
+    {
+        $programme = Programmes::findOrFail($programmeId);
+
+        // Récupérer l'abonné en fonction de la référence
+        $abonne = Abonnes::where('REFERENCE', $request->input('reference'))->first();
+
+        if ($abonne) {
+            // Créer un nouvel enregistrement dans ProgrammesDet
+            ProgrammesDet::create([
+                'idprogrammes' => $programme->idprogrammes,
+                'REFERENCE' => $abonne->REFERENCE,
+                // Remplir les autres champs selon les besoins
+            ]);
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Abonné non trouvé.']);
+    }
 
     // Affiche le formulaire de modification d'un programme existant
     public function edit($id)

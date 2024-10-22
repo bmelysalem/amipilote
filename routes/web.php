@@ -14,6 +14,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('programmes', App\Http\Controllers\ProgrammesController::class);
     Route::get('/search-abonnees', [App\Http\Controllers\AbonnesController::class, 'search'])->name('search.abonnees');
     Route::post('/programmes/{programme}/add-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addProgrammeDet'])->name('add.programmedet');
+    Route::post('/programmes/{programme}/add-all-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addAllProgrammesDet'])->name('add.all.programmedet');
 
 });
 

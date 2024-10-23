@@ -63,6 +63,10 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h4>Détails des Compteurs</h4>
+                    <!-- Button to trigger the modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
+        Ajout des abonnée, Secteur et Tourné
+    </button>
                     <table class="table mt-4">
                         <thead>
                             <tr>
@@ -142,10 +146,7 @@
         </div>
     </div>
 
-    <!-- Button to trigger the modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
-        Rechercher un abonné
-    </button>
+
 
     <!-- Modal Structure -->
     <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel"

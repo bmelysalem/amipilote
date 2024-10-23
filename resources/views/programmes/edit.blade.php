@@ -309,38 +309,15 @@
                     }).then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('ProgrammeDet ajouté avec succès.');
+                            alert(data.message);
                             $('#searchModal').modal('hide'); // Ferme la modale après l'ajout
+                            location.reload();
                         } else {
-                            alert('Erreur lors de l\'ajout.');
+                            alert(data.message);
                         }
                     });
             }
         </script>
 
-        <script>
-            function addProgrammeDet(reference) {
-                var programmeId = {{ $programme->idprogrammes }}; // Assure-toi que tu as la variable programmeId
-
-                fetch(`/programmes/${programmeId}/add-programmedet`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}' // N'oublie pas d'inclure le token CSRF
-                        },
-                        body: JSON.stringify({
-                            reference: reference
-                        })
-                    }).then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('ProgrammeDet ajouté avec succès.');
-                            // Tu peux ici mettre à jour la liste des ProgrammesDet
-                        } else {
-                            alert('Erreur lors de l\'ajout.');
-                        }
-                    });
-            }
-        </script>
     @endpush
 </x-app-layout>

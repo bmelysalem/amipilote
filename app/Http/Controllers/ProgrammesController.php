@@ -89,58 +89,74 @@ class ProgrammesController extends Controller
     }
 
     public function addProgrammeDet(Request $request, $programmeId)
-    {
-        try {
-            // Valider l'entrée du champ 'reference'
-            $request->validate([
-                'reference' => 'required|string|max:12'
-            ]);
+{
+    try {
+        // Valider l'entrée du champ 'reference'
+        $request->validate([
+            'reference' => 'required|string|max:12'
+        ]);
 
-            // Vérifier si le programme existe
-            $programme = Programmes::findOrFail($programmeId);
+        // Vérifier si le programme existe
+        $programme = Programmes::findOrFail($programmeId);
 
-            // Récupérer l'abonné en fonction de la référence
-            $abonne = Abonnes::where('REFERENCE', $request->input('reference'))->first();
+        // Récupérer l'abonné en fonction de la référence
+        $reference = $request->input('reference');
+        $abonne = Abonnes::where('REFERENCE', $reference)->first();
 
-            if ($abonne) {
-                // Créer un nouvel enregistrement dans ProgrammesDet
-                ProgrammesDet::create([
-                    'idprogrammes' => $programme->idprogrammes,
-                    'REFERENCE' => $abonne->REFERENCE,
-                    // Ajouter d'autres champs si nécessaire
-                ]);
+        if ($abonne) {
+            // Vérifier si la référence existe déjà dans ProgrammesDet pour ce programme
+            $existing = ProgrammesDet::where('idprogrammes', $programme->idprogrammes)
+                                     ->where('REFERENCE', $reference)
+                                     ->first();
 
-                // Retourner une réponse JSON de succès
-                return response()->json(['success' => true, 'message' => 'ProgrammeDet ajouté avec succès.'], 201);
+            if ($existing) {
+                // Si la référence existe déjà, retour d'un message d'erreur
+                return response()->json([
+                    'success' => false,
+                    'message' => "La référence $reference est déjà présente dans le programme.",
+                ], 409); // 409 Conflict pour signaler un doublon
             }
 
-            // Retourner une réponse JSON d'erreur si l'abonné n'est pas trouvé
-            return response()->json(['success' => false, 'message' => 'Abonné non trouvé.'], 404);
+            // Créer un nouvel enregistrement dans ProgrammesDet
+            ProgrammesDet::create([
+                'idprogrammes' => $programme->idprogrammes,
+                'REFERENCE' => $abonne->REFERENCE,
+                'compteur_ancien' => $abonne->COMPTEUR,
+                // Ajouter d'autres champs si nécessaire
+            ]);
 
-        } catch (ValidationException $e) {
-            // Retourner les erreurs de validation si elles existent
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur de validation',
-                'errors' => $e->errors(),
-            ], 422);
-
-        } catch (ModelNotFoundException $e) {
-            // Gestion d'erreur si le programme n'est pas trouvé
-            return response()->json([
-                'success' => false,
-                'message' => 'Programme non trouvé.',
-            ], 404);
-
-        } catch (\Exception $e) {
-            // Gestion générale des autres erreurs
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors de l\'ajout du ProgrammeDet.',
-                'error' => $e->getMessage()
-            ], 500);
+            // Retourner une réponse JSON de succès
+            return response()->json(['success' => true, 'message' => 'ProgrammeDet ajouté avec succès.'], 201);
         }
+
+        // Retourner une réponse JSON d'erreur si l'abonné n'est pas trouvé
+        return response()->json(['success' => false, 'message' => 'Abonné non trouvé.'], 404);
+
+    } catch (ValidationException $e) {
+        // Retourner les erreurs de validation si elles existent
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur de validation',
+            'errors' => $e->errors(),
+        ], 422);
+
+    } catch (ModelNotFoundException $e) {
+        // Gestion d'erreur si le programme n'est pas trouvé
+        return response()->json([
+            'success' => false,
+            'message' => 'Programme non trouvé.',
+        ], 404);
+
+    } catch (\Exception $e) {
+        // Gestion générale des autres erreurs
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de l\'ajout du ProgrammeDet.',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
+
 
     public function addAllProgrammesDetOld(Request $request, $programmeId)
     {
@@ -213,8 +229,19 @@ class ProgrammesController extends Controller
 
             // Vérifier s'il y a des doublons ou des erreurs
             if (!empty($failedReferences) || !empty($duplicateReferences)) {
-                $message = 'Certaines références n\'ont pas été traitées correctement.';
+                $failedCount = count($failedReferences);
+    $duplicateCount = count($duplicateReferences);
 
+    // Construire un message plus explicite en fonction des références concernées
+    $message = 'Certaines références n\'ont pas été traitées correctement. ';
+
+    if ($failedCount > 0) {
+        $message .= "$failedCount référence(s) non trouvée(s). ";
+    }
+
+    if ($duplicateCount > 0) {
+        $message .= "$duplicateCount référence(s) déjà présente(s) dans le programme.";
+    }
                 // Si certaines références échouent ou sont des doublons
                 return response()->json([
                     'success' => true,

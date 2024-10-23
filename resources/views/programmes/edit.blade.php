@@ -31,13 +31,13 @@
                                 value="{{ $programme->date_debut }}" required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="date_fin">Date Fin</label>
                             <input type="date" name="date_fin" class="form-control"
                                 value="{{ $programme->date_fin }}" required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="programme_cloture">Programme Clôturé</label>
                             <input type="text" name="programme_cloture" class="form-control"
                                 value="{{ $programme->programme_cloture }}" required>
@@ -49,7 +49,7 @@
                                 value="{{ $programme->Code_agent }}" required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="les_secteurs">Les Secteurs</label>
                             <input type="text" name="les_secteurs" class="form-control"
                                 value="{{ $programme->les_secteurs }}">

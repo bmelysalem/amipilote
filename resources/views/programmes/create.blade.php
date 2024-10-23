@@ -33,18 +33,18 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date_debut">Date Début</label>
-                            <input type="date" name="date_debut" class="form-control" value="{{ old('date_debut') }}" required>
+                            <label for="date_debut hidden">Date Début</label>
+                            <input type="date" name="date_debut" class="form-control" value="{{ old('date_debut') }}" >
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="date_fin">Date Fin</label>
-                            <input type="date" name="date_fin" class="form-control" value="{{ old('date_fin') }}" required>
+                            <input type="date" name="date_fin" class="form-control" value="{{ old('date_fin') }}" >
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="programme_cloture">Programme Clôturé</label>
-                            <input type="text" name="programme_cloture" class="form-control" value="{{ old('programme_cloture') }}" required>
+                            <input type="text" name="programme_cloture" class="form-control" value="0" required>
                         </div>
 
                         <div class="form-group">
@@ -52,7 +52,7 @@
                             <input type="text" name="Code_agent" class="form-control" value="{{ old('Code_agent') }}" required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="les_secteurs">Les Secteurs</label>
                             <input type="text" name="les_secteurs" class="form-control" value="{{ old('les_secteurs') }}">
                         </div>

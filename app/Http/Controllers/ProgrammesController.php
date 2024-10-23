@@ -51,8 +51,8 @@ class ProgrammesController extends Controller
             $validatedData = $request->validate([
                 'Code_agence' => 'required|max:2',
                 'date_saisie' => 'required|date',
-                'date_debut' => 'required|date',
-                'date_fin' => 'required|date',
+                'date_debut' => 'nullable|date',
+                'date_fin' => 'nullable|date',
                 'programme_cloture' => 'required|max:1',
                 'Code_agent' => 'required|max:10',
                 'les_secteurs' => 'nullable|max:50'

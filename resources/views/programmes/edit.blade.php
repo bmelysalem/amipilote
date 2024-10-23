@@ -25,7 +25,7 @@
                                 value="{{ $programme->date_saisie }}" required>
                         </div>
 
-                        <div class="form-group hidden" >
+                        <div class="form-group hidden">
                             <label for="date_debut">Date Début</label>
                             <input type="date" name="date_debut" class="form-control"
                                 value="{{ $programme->date_debut }}" required>
@@ -64,9 +64,9 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h4>Détails des Compteurs</h4>
                     <!-- Button to trigger the modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
-        Ajout des abonnée, Secteur et Tourné
-    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
+                        Ajout des abonnée, Secteur et Tourné
+                    </button>
                     <table class="table mt-4">
                         <thead>
                             <tr>
@@ -233,7 +233,7 @@
                             </tr>
                         `;
                                     abonnesReferences.push(abonne
-                                    .REFERENCE); // Ajouter la référence à la liste
+                                        .REFERENCE); // Ajouter la référence à la liste
                                 });
 
                                 table += `
@@ -275,15 +275,18 @@
                         }).then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                alert('Tous les abonnés ont été ajoutés avec succès.');
+                                alert(data.message);
                                 $('#searchModal').modal('hide'); // Ferme la modale après l'ajout
                             } else {
                                 alert('Erreur lors de l\'ajout.');
                             }
+                            location.reload();
                         })
                         .catch(error => {
-                            alert('Erreur lors de l\'ajout.');
+                            //alert('Erreur lors de l\'ajout.');
+                            alert(error);
                         });
+                        location.reload();
                 } else {
                     alert('Aucun abonné à ajouter.');
                 }

@@ -166,78 +166,96 @@ class ProgrammesController extends Controller
     }
 
     public function addAllProgrammesDet(Request $request, $programmeId)
-    {
-        try {
-            // Valider les données envoyées
-            $request->validate([
-                'references' => 'required|array',   // Assurez-vous que 'references' est un tableau
-                'references.*' => 'string|max:12',  // Valider chaque référence individuellement
-            ]);
+{
+    try {
+        // Valider les données envoyées
+        $request->validate([
+            'references' => 'required|array',   // S'assurer que 'references' est un tableau
+            'references.*' => 'string|max:12',  // Valider chaque référence individuellement
+        ]);
 
-            // Récupérer le programme, ou échouer s'il n'existe pas
-            $programme = Programmes::findOrFail($programmeId);
-            $references = $request->input('references');
+        // Récupérer le programme, ou échouer s'il n'existe pas
+        $programme = Programmes::findOrFail($programmeId);
+        $references = $request->input('references');
 
-            // Initialiser un tableau pour les références qui ont échoué
-            $failedReferences = [];
+        // Initialiser des tableaux pour les références qui échouent ou sont des doublons
+        $failedReferences = [];
+        $duplicateReferences = [];
 
-            if ($references && is_array($references)) {
-                foreach ($references as $reference) {
-                    $abonne = Abonnes::where('REFERENCE', $reference)->first();
+        if ($references && is_array($references)) {
+            foreach ($references as $reference) {
+                // Vérifier si l'abonné existe
+                $abonne = Abonnes::where('REFERENCE', $reference)->first();
 
-                    if ($abonne) {
+                if ($abonne) {
+                    // Vérifier si la référence existe déjà dans ce programme
+                    $existing = ProgrammesDet::where('idprogrammes', $programme->idprogrammes)
+                        ->where('REFERENCE', $reference)
+                        ->first();
+
+                    if ($existing) {
+                        // Si la référence existe déjà dans le programme, on l'ajoute aux doublons
+                        $duplicateReferences[] = $reference;
+                    } else {
                         // Créer un nouvel enregistrement dans ProgrammesDet
                         ProgrammesDet::create([
                             'idprogrammes' => $programme->idprogrammes,
                             'REFERENCE' => $abonne->REFERENCE,
+                            'compteur_ancien' => $abonne->COMPTEUR,
                             // Ajouter d'autres champs si nécessaire
                         ]);
-                    } else {
-                        // Ajouter les références qui échouent à un tableau de suivi
-                        $failedReferences[] = $reference;
                     }
+                } else {
+                    // Ajouter les références qui échouent à un tableau de suivi
+                    $failedReferences[] = $reference;
                 }
-
-                // Si certaines références ont échoué, retourner un message d'erreur partielle
-                if (!empty($failedReferences)) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Certaines références n\'ont pas été trouvées.',
-                        'failed_references' => $failedReferences
-                    ], 206); // 206 Partial Content pour signifier que certaines opérations ont échoué
-                }
-
-                // Si toutes les références ont été ajoutées avec succès
-                return response()->json(['success' => true, 'message' => 'Tous les ProgrammesDet ont été ajoutés avec succès.'], 201);
             }
 
-            // Si 'references' est vide ou incorrect
-            return response()->json(['success' => false, 'message' => 'Aucune référence valide trouvée.'], 400);
+            // Vérifier s'il y a des doublons ou des erreurs
+            if (!empty($failedReferences) || !empty($duplicateReferences)) {
+                $message = 'Certaines références n\'ont pas été traitées correctement.';
 
-        } catch (ValidationException $e) {
-            // Gestion des erreurs de validation
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur de validation des données.',
-                'errors' => $e->errors(),
-            ], 422);
+                // Si certaines références échouent ou sont des doublons
+                return response()->json([
+                    'success' => true,
+                    'message' => $message,
+                    'failed_references' => $failedReferences,
+                    'duplicate_references' => $duplicateReferences
+                ], 206); // 206 Partial Content pour signifier que certaines opérations ont échoué ou doublonné
+            }
 
-        } catch (ModelNotFoundException $e) {
-            // Gestion de l'erreur lorsque le programme n'est pas trouvé
-            return response()->json([
-                'success' => false,
-                'message' => 'Programme non trouvé.',
-            ], 404);
-
-        } catch (\Exception $e) {
-            // Gestion des autres exceptions
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors de l\'ajout des ProgrammesDet.',
-                'error' => $e->getMessage(),
-            ], 500);
+            // Si toutes les références ont été ajoutées avec succès
+            return response()->json(['success' => true, 'message' => 'Tous les ProgrammesDet ont été ajoutés avec succès.'], 201);
         }
+
+        // Si 'references' est vide ou incorrect
+        return response()->json(['success' => false, 'message' => 'Aucune référence valide trouvée.'], 400);
+
+    } catch (ValidationException $e) {
+        // Gestion des erreurs de validation
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur de validation des données.',
+            'errors' => $e->errors(),
+        ], 422);
+
+    } catch (ModelNotFoundException $e) {
+        // Gestion de l'erreur lorsque le programme n'est pas trouvé
+        return response()->json([
+            'success' => false,
+            'message' => 'Programme non trouvé.',
+        ], 404);
+
+    } catch (\Exception $e) {
+        // Gestion des autres exceptions
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de l\'ajout des ProgrammesDet.',
+            'error' => $e->getMessage(),
+        ], 500);
     }
+}
+
 
 
     // Affiche le formulaire de modification d'un programme existant

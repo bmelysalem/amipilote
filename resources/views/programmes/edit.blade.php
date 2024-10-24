@@ -184,7 +184,7 @@
                 </div>
                 <div class="modal-footer">
                     <!-- Ajouter tout button -->
-                    <button type="button" id="addAllButton" class="btn btn-success">Ajouter tout</button>
+                    <button type="button" id="addAllButton" class="btn btn-success">Ajouter tout les chagement</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                 </div>
             </div>
@@ -234,15 +234,31 @@
 
                                 // Ajouter une ligne pour chaque abonné trouvé
                                 data.forEach(function(abonne) {
+                                    let etat = abonne.ETAT_ABONNE; // Supposons que l'état de l'abonné soit stocké dans cette variable
+                                    let spanLabel = ''; // Variable pour le texte du span
+                                    let spanClass = '';
+                                    // Vérifier les différents états et ajuster le texte du span
+                                    if ([1, 2, 4].includes(abonne.ETAT_ABONNE)) {
+                                        spanLabel = 'Ajouter changement'; spanClass = 'green';
+                                    } else if (abonne.ETAT_ABONNE === 3) {
+                                        spanLabel = 'Ajouter Succession'; spanClass = 'red';
+                                    } else if (abonne.ETAT_ABONNE === 9) {
+                                        spanLabel = 'Ajouter création'; spanClass = 'blue';
+                                    } else {
+                                        spanLabel = 'Ajouter'; // Autre texte si l'état ne correspond pas à ceux ci-dessus
+                                        spanClass = 'gray';
+                                    }
                                     table += `
                             <tr>
                                 <td>${abonne.REFERENCE}</td>
                                 <td>${abonne.NOM}</td>
-                                <td><button type="button" onclick="addProgrammeDet('${abonne.REFERENCE}')" class="btn btn-success">Ajouter</button></td>
+                                <td><button type="button" onclick="addProgrammeDet('${abonne.REFERENCE}')" class="btn btn-success" style="border double 1px "'+spanLabel+'>Ajouter</button></td>
                             </tr>
                         `;
-                                    abonnesReferences.push(abonne
-                                        .REFERENCE); // Ajouter la référence à la liste
+                                    if (![3, 9].includes(abonne.ETAT_ABONNE)) {
+                                        // Ajouter la référence de l'abonné dans le tableau
+                                        abonnesReferences.push(abonne.REFERENCE);
+                                    } // Ajouter la référence à la liste
                                 });
 
                                 table += `

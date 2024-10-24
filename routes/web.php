@@ -15,7 +15,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search-abonnees', [App\Http\Controllers\AbonnesController::class, 'search'])->name('search.abonnees');
     Route::post('/programmes/{programme}/add-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addProgrammeDet'])->name('add.programmedet');
     Route::post('/programmes/{programme}/add-all-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addAllProgrammesDet'])->name('add.all.programmedet');
-
+    Route::post('/programmes/{programmeId}/changements', [App\Http\Controllers\ProgrammesController::class, 'storeChangementsLocal'])->name('programmes.storeChangementsLocal');
 });
 
 Route::get('/dashboard', function () {

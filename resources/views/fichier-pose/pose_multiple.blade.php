@@ -114,7 +114,9 @@
     </style>
 </head>
 <body>
-
+    @php
+        $i =1;
+    @endphp
     @foreach($abonnes as $fiche)
 
         @if(isset($fiche->abonne))
@@ -125,6 +127,10 @@
         @endif
 
         @if(!$loop->last)
+            @php
+                $i++;
+            @endphp
+            {{'Page : ' .$i}}
             <div class="page-break"></div> <!-- Insère un saut de page entre les fiches -->
         @endif
     @endforeach

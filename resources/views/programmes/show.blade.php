@@ -39,6 +39,10 @@
                         </form>
                     @else
                         <button class="btn btn-secondary" disabled>Programme déjà validé</button>
+                        <form action="{{ route('programmes.storeChangementsLocal', $programme->idprogrammes) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Enregistrer les Changements et envoyer à AKILEE</button>
+                        </form>
                     @endif
                     <h4>Détails des Compteurs</h4>
                     <table class="table mt-4">

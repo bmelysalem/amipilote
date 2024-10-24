@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\ProgrammesDet;
 use App\Models\Programmes;
 use App\Models\Abonnes;
+use App\Jobs\GenerateFichesJob;
 use PDF;
 // Import de la façade DOMPDF
 use Illuminate\Http\Request;
 
-class ProgrammesDetController extends Controller {
-    public function generatePdf( $programmeId, $abonneId ) {
+class ProgrammesDetController extends Controller
+{
+    public function generatePdf($programmeId, $abonneId)
+    {
         // Récupérer les informations du programme et de l'abonné
         $fiche = ProgrammesDet::where('idprogrammes', $programmeId)
-                                  ->where('REFERENCE', $abonneId)
-                                  ->firstOrFail();
+            ->where('REFERENCE', $abonneId)
+            ->firstOrFail();
 
         $abonne = Abonnes::where('REFERENCE', $fiche->REFERENCE)->firstOrFail();
 
@@ -25,6 +28,14 @@ class ProgrammesDetController extends Controller {
 
         // Télécharger le fichier PDF
         return $pdf->download('fichier_pose_abonne_' . $abonne->REFERENCE . '.pdf');
+    }
+    public function generateFichesNEW($programmeId)
+    {
+        // Dispatch le job pour générer les fiches
+        GenerateFichesJob::dispatch($programmeId);
+
+        // Retourner une réponse immédiate pour indiquer que le processus a démarré
+        return redirect()->route('programmes.show', $programmeId)->with('success', 'La génération des fiches a été lancée. Vous recevrez une notification une fois terminé.');
     }
     public function generateFiches($programmeId)
     {
@@ -94,7 +105,6 @@ class ProgrammesDetController extends Controller {
         $programme->fiches_generees = true;
         $programme->save();
 
-        return redirect()->route('programmes.show', $programmeId)->with('success', 'Fiches générées avec succès.' );
+        return redirect()->route('programmes.show', $programmeId)->with('success', 'Fiches générées avec succès.');
     }
-
 }

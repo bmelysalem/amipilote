@@ -24,6 +24,9 @@ class ProgrammesDet extends Model
     ];
     protected $table = 'programmesdet'; // Spécifie la table si nécessaire
 
+    // Spécifie la clé primaire personnalisée
+    protected $primaryKey = 'idprogemesdet';
+
     // Relation avec Programmes
     public function programme()
     {

@@ -259,6 +259,16 @@ class ProgrammesController extends Controller
             ], 500);
         }
     }
+    public function deleteProgrammeDet($programmeId, $programmedetId)
+    {
+        // Trouver l'élément ProgrammesDet à supprimer
+        $programmeDet = ProgrammesDet::where('idprogrammes', $programmeId)->where('idprogemesdet', $programmedetId)->firstOrFail();
+
+        // Supprimer l'élément ProgrammesDet
+        $programmeDet->delete();
+
+        return redirect()->back()->with('success', 'Le détail du programme a été supprimé avec succès.');
+    }
 
 
     public function addAllProgrammesDetOld(Request $request, $programmeId)

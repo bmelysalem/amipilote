@@ -16,6 +16,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/programmes/{programme}/add-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addProgrammeDet'])->name('add.programmedet');
     Route::post('/programmes/{programme}/add-all-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addAllProgrammesDet'])->name('add.all.programmedet');
     Route::post('/programmes/{programmeId}/changements', [App\Http\Controllers\ProgrammesController::class, 'storeChangementsLocal'])->name('programmes.storeChangementsLocal');
+    Route::delete('/programmes/{programmeId}/programmedet/{programmedetId}', [App\Http\Controllers\ProgrammesController::class, 'deleteProgrammeDet'])->name('programmes.deleteProgrammesDet');
+
 });
 
 Route::get('/dashboard', function () {

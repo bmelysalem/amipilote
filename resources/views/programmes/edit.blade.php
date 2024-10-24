@@ -92,6 +92,15 @@
                                             data-bs-target="#abonneModal{{ $detail->REFERENCE }}">
                                             Voir Détails
                                         </button>
+                                        <!-- Formulaire de suppression -->
+                                        <form
+                                            action="{{ route('programmes.deleteProgrammesDet', [$programme->idprogrammes, $detail->idprogemesdet]) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette ligne ?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                        </form>
 
                                         <!-- Modal Bootstrap -->
                                         <div class="modal fade" id="abonneModal{{ $detail->REFERENCE }}" tabindex="-1"
@@ -286,7 +295,7 @@
                             //alert('Erreur lors de l\'ajout.');
                             alert(error);
                         });
-                        location.reload();
+                    location.reload();
                 } else {
                     alert('Aucun abonné à ajouter.');
                 }
@@ -318,6 +327,5 @@
                     });
             }
         </script>
-
     @endpush
 </x-app-layout>

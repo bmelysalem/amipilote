@@ -10,7 +10,10 @@ class ChangementsLocal extends Model
     use HasFactory;
 
     // Spécifie la table associée à ce modèle
-    protected $table = 'changements_local';
+    protected $table = 'changements';
+
+    // Spécifie la connexion de base de données utilisée (mysql2)
+    protected $connection = 'mysql2'; // Utilise la connexion définie dans `config/database.php`
 
     // Spécifie la clé primaire personnalisée
     protected $primaryKey = 'IDchangements';

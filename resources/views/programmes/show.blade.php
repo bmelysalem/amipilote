@@ -65,7 +65,7 @@
                                     <td>{{ $detail->compteur_ancien }}</td>
                                     <td>{{ $detail->telephone_03 }}</td>
                                     <td>
-                                        @if(!$programme->programme_valide)
+                                        @if($programme->programme_valide)
                                         <!-- Bouton pour télécharger le fichier PDF -->
                                         <a href="{{ route('fichier-pose.pdf', ['programme' => $programme->idprogrammes, 'abonne' => $detail->REFERENCE]) }}"
                                             class="btn btn-success">

@@ -26,10 +26,14 @@
                             <li class="list-group-item">5 - Télécharger les fiches générées (fichier PDF consolidé).</li>
                             <li class="list-group-item">6 - Enregistrer les changements dans Akilee.</li>
                         </ul>
-
-                        <div class="alert alert-info mt-4 text-center">
-                            <strong>Info :</strong> Les nouveaux programmes sont désormais listés en haut de la liste.
-                        </div>
+                        <h4 class="text-primary">Informations supplémentaires :</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Les nouveaux programmes sont désormais listés en haut de la liste.</li>
+                            <li class="list-group-item">Désormais, l'application ouvre directement la page d'édition après la création du programme.</li>
+                            <li class="list-group-item">Une fois un programme validé, il n'est plus possible d'y ajouter de nouveaux abonnés.</li>
+                            <li class="list-group-item">Pour pouvoir télécharger les fiches, le programme doit d'abord être validé.</li>
+                            <li class="list-group-item">Depuis la page d'édition d'un programme, le bouton "Je veux les autres étapes" vous dirige vers la page de gestion pour la validation et d'autres actions.</li>
+                        </ul>
                     </div>
                 </div>
             </div>

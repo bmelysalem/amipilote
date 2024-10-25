@@ -352,7 +352,7 @@
                         if (data.success) {
                             alert(data.message);
                             $('#searchModal').modal('hide'); // Ferme la modale après l'ajout
-                            location.reload();
+                            //location.reload();
                         } else {
                             alert(data.message);
                         }

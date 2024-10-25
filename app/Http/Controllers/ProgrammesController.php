@@ -60,11 +60,11 @@ class ProgrammesController extends Controller
                 'les_secteurs' => 'nullable|max:50'
             ]);
 
-            Programmes::create($validatedData);
+            $programme = Programmes::create($validatedData);
 
             return $request->expectsJson()
                 ? response()->json(['message' => 'Programme créé avec succès.'], 201)
-                : redirect()->route('programmes.index')->with('success', 'Programme créé avec succès.');
+                : redirect()->route('programmes.edit',[ $programme->idprogrammes])->with('success', 'Programme créé avec succès.');
         } catch (ValidationException $e) {
             return response()->json(['message' => 'Validation failed', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {

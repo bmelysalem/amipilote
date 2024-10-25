@@ -32,6 +32,7 @@
                     @else
                         <button class="btn btn-secondary" disabled>Fiches non générées</button>
                     @endif
+
                     @if(!$programme->programme_valide)
                         <form action="{{ route('programmes.valider', $programme->idprogrammes) }}" method="POST" style="display:inline;">
                             @csrf
@@ -39,11 +40,13 @@
                         </form>
                     @else
                         <button class="btn btn-secondary" disabled>Programme déjà validé</button>
-                        <form action="{{ route('programmes.storeChangementsLocal', $programme->idprogrammes) }}" method="POST">
+                        <form action="{{ route('programmes.storeChangementsLocal', $programme->idprogrammes) }}" method="POST" style="display:inline;">
                             @csrf
                             <button type="submit" class="btn btn-primary">Envoyer les données à AKILEE DATABASE</button>
                         </form>
                     @endif
+                    <a href="{{ route('programmes.index') }}" class="btn btn-secondary">Retour à la liste des programmes</a>
+
                     <h4>Détails des Compteurs</h4>
                     <table class="table mt-4">
                         <thead>
@@ -127,7 +130,7 @@
                         </tbody>
                     </table>
 
-                    <a href="{{ route('programmes.index') }}" class="btn btn-secondary">Retour à la liste</a>
+                    <a href="{{ route('programmes.index') }}" class="btn btn-secondary">Retour à la liste des programmes</a>
                 </div>
             </div>
         </div>

@@ -73,6 +73,8 @@
                         Ce programme est déjà validé
                     </button>
                     @endif
+                    <a href="{{ route('programmes.show', $programme->idprogrammes) }}" class="btn btn-info">Je veux les autres étapes >></a>
+
                     <table class="table mt-4">
                         <thead>
                             <tr>
@@ -102,7 +104,7 @@
                                         @if(!$programme->programme_valide)
                                         <form
                                             action="{{ route('programmes.deleteProgrammesDet', [$programme->idprogrammes, $detail->idprogemesdet]) }}"
-                                            method="POST"
+                                            method="POST" style="display:inline;"
                                             onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette ligne ?');">
                                             @csrf
                                             @method('DELETE')

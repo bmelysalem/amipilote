@@ -64,16 +64,18 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h4>Détails des Compteurs</h4>
                     <!-- Button to trigger the modal -->
-                    @if(!$programme->programme_valide)
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
-                        Ajout des abonnée, Secteur et Tourné
-                    </button>
+                    @if (!$programme->programme_valide)
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
+                            Ajout des abonnée, Secteur et Tourné
+                        </button>
                     @else
-                    <button type="button" class="btn btn-primary disabled" data-toggle="modal" data-target="#searchModal">
-                        Ce programme est déjà validé
-                    </button>
+                        <button type="button" class="btn btn-primary disabled" data-toggle="modal"
+                            data-target="#searchModal">
+                            Ce programme est déjà validé
+                        </button>
                     @endif
-                    <a href="{{ route('programmes.show', $programme->idprogrammes) }}" class="btn btn-info">Je veux les autres étapes >></a>
+                    <a href="{{ route('programmes.show', $programme->idprogrammes) }}" class="btn btn-info">Je veux les
+                        autres étapes >></a>
 
                     <table class="table mt-4">
                         <thead>
@@ -101,15 +103,15 @@
                                             Voir Détails
                                         </button>
                                         <!-- Formulaire de suppression -->
-                                        @if(!$programme->programme_valide)
-                                        <form
-                                            action="{{ route('programmes.deleteProgrammesDet', [$programme->idprogrammes, $detail->idprogemesdet]) }}"
-                                            method="POST" style="display:inline;"
-                                            onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette ligne ?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                                        </form>
+                                        @if (!$programme->programme_valide)
+                                            <form
+                                                action="{{ route('programmes.deleteProgrammesDet', [$programme->idprogrammes, $detail->idprogemesdet]) }}"
+                                                method="POST" style="display:inline;"
+                                                onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette ligne ?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                                            </form>
                                         @endif
 
                                         <!-- Modal Bootstrap -->
@@ -246,11 +248,12 @@
                                 // Ajouter une ligne pour chaque abonné trouvé
                                 data.forEach(function(abonne) {
                                     let etat = abonne
-                                    .ETAT_ABONNE; // Supposons que l'état de l'abonné soit stocké dans cette variable
+                                        .ETAT_ABONNE; // Supposons que l'état de l'abonné soit stocké dans cette variable
                                     let spanLabel = ''; // Variable pour le texte du span
                                     let spanClass = '';
                                     // Vérifier les différents états et ajuster le texte du span
-                                    if ((abonne.ETAT_ABONNE == 1) ||  (abonne.ETAT_ABONNE == 2)||  (abonne.ETAT_ABONNE == 4)) {
+                                    if ((abonne.ETAT_ABONNE == 1) || (abonne.ETAT_ABONNE == 2) || (abonne
+                                            .ETAT_ABONNE == 4)) {
                                         spanLabel = 'Changement';
                                         spanClass = 'green';
                                     } else if (abonne.ETAT_ABONNE == 3) {
@@ -261,7 +264,7 @@
                                         spanClass = 'blue';
                                     } else {
                                         spanLabel =
-                                        'Ajouter'; // Autre texte si l'état ne correspond pas à ceux ci-dessus
+                                            'Ajouter'; // Autre texte si l'état ne correspond pas à ceux ci-dessus
                                         spanClass = 'gray';
                                     }
                                     table += `
@@ -271,7 +274,7 @@
                                 <td><button type="button" onclick="addProgrammeDet('${abonne.REFERENCE}')" class="btn btn-success" style="border double 1px ${spanClass}">${spanLabel}</button></td>
                             </tr>
                         `;
-                                    if ((abonne.ETAT_ABONNE != 3) &&  (abonne.ETAT_ABONNE != 9)) {
+                                    if ((abonne.ETAT_ABONNE != 3) && (abonne.ETAT_ABONNE != 9)) {
                                         // Ajouter la référence de l'abonné dans le tableau
                                         abonnesReferences.push(abonne.REFERENCE);
                                     } // Ajouter la référence à la liste

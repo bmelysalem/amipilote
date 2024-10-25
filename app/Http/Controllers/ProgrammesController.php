@@ -21,7 +21,7 @@ class ProgrammesController extends Controller
     public function index()
     {
         // Charger les programmes avec le nombre de détails associés
-        $programmes = Programmes::withCount('details')->get();
+        $programmes = Programmes::withCount('details')->orderBy('idprogrammes', 'desc')->get();
         return view('programmes.index', compact('programmes'));
     }
     // Affiche le formulaire de création d'un programme

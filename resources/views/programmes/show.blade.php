@@ -41,7 +41,7 @@
                         <button class="btn btn-secondary" disabled>Programme déjà validé</button>
                         <form action="{{ route('programmes.storeChangementsLocal', $programme->idprogrammes) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-primary">Enregistrer les Changements et envoyer à AKILEE</button>
+                            <button type="submit" class="btn btn-primary">Envoyer les données à AKILEE DATABASE</button>
                         </form>
                     @endif
                     <h4>Détails des Compteurs</h4>
@@ -65,11 +65,13 @@
                                     <td>{{ $detail->compteur_ancien }}</td>
                                     <td>{{ $detail->telephone_03 }}</td>
                                     <td>
+                                        @if(!$programme->programme_valide)
                                         <!-- Bouton pour télécharger le fichier PDF -->
                                         <a href="{{ route('fichier-pose.pdf', ['programme' => $programme->idprogrammes, 'abonne' => $detail->REFERENCE]) }}"
                                             class="btn btn-success">
                                             Télécharger le fichier PDF
                                         </a>
+                                        @endif
                                         <!-- Bouton pour ouvrir la modale avec les détails de l'abonné -->
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#abonneModal{{ $detail->REFERENCE }}">

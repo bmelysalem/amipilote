@@ -241,7 +241,7 @@
             </div>
             <div>
                 <div class="left " ><label style="width: 80px">Type Compteur (M / T) </label>
-                    <div class="field bordered">{{ $abonne->TYPE_COMPTEUR }}</div>
+                    <div class="field bordered">{{substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M'}}</div>
                 </div>
                 <div class="clear"></div>
             </div>

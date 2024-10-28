@@ -9,6 +9,7 @@
     </div>
     <div class="cnter">
         <h1 class="center">Fiche de pose Compteur Intelligent</h1>
+        <h2>{{$fiche->abonne->ETAT_ABONNE == 9 ? 'Création 10E':($fiche->abonne->ETAT_ABONNE == 3 ?'Succession 20E':'Changement')}}</h2>
     </div>
     <div class="clear"></div>
 </div>

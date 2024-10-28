@@ -64,7 +64,10 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h4>Détails des Compteurs</h4>
                     <!-- Button to trigger the modal -->
-                    @if (!$programme->programme_valide)
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
+                        Ajout des abonnée, Secteur et Tourné
+                    </button>
+                    {{-- @if (!$programme->programme_valide)
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
                             Ajout des abonnée, Secteur et Tourné
                         </button>
@@ -73,7 +76,7 @@
                             data-target="#searchModal">
                             Ce programme est déjà validé
                         </button>
-                    @endif
+                    @endif --}}
                     <a href="{{ route('programmes.show', $programme->idprogrammes) }}" class="btn btn-info">Je veux les
                         autres étapes >></a>
 

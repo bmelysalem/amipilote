@@ -22,7 +22,10 @@
                                 Générer les fiches
                             </a>
                         @else
-                            <button class="btn btn-secondary" disabled>Fiches déjà générées</button>
+                        <a href="{{ route('generate-fiches', $programme->idprogrammes) }}" class="btn btn-success">
+                            Re-Générer les fiches
+                        </a>
+                            {{-- <button class="btn btn-secondary" disabled>Fiches déjà générées</button> --}}
                         @endif
                     @endif
                     @if($programme->fiches_generees)

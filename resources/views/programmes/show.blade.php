@@ -107,6 +107,7 @@
                                                             <p><strong>Téléphone :</strong>
                                                                 {{ $detail->abonne->TELEPHONE_01 }}</p>
                                                             <p><strong>Email :</strong> {{ $detail->abonne->MAIL }}</p>
+                                                            <p><strong>Tarif :</strong> {{ $detail->abonne->Tarif }}</p>
                                                             <p><strong>Groupe :</strong> {{ $detail->abonne->GROUPE }}</p>
                                                             <p><strong>Code Branchement :</strong>
                                                                 {{ $detail->abonne->CODE_BRANCHEMENT }}</p>

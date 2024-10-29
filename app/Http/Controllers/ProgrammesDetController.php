@@ -43,9 +43,9 @@ class ProgrammesDetController extends Controller
         $programme = Programmes::findOrFail($programmeId);
 
         // Vérifier si les fiches ont déjà été générées
-        if ($programme->fiches_generees) {
-            return redirect()->back()->with('error', 'Les fiches pour ce programme ont déjà été générées.');
-        }
+        // if ($programme->fiches_generees) {
+        //     return redirect()->back()->with('error', 'Les fiches pour ce programme ont déjà été générées.');
+        // }
 
         // Récupérer les abonnés liés à ce programme
         $abonnes = ProgrammesDet::where('idprogrammes', $programmeId)->with('abonne')->get();

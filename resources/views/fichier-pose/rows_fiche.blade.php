@@ -156,7 +156,7 @@
                 <div class="field bordered">{{ $abonne->PS}}</div>
             </div>
             <div class="right"><label>TARIF (FAB) </label>
-                <div class="field bordered">{{ (isset($abonne->TARIF) &&  $abonne->TARIF!='') ? $abonne->TARIF : '5106'}}</div>
+                <div class="field bordered">{{ (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF) }}</div>
             </div>
             <div class="clear"></div>
         </div>

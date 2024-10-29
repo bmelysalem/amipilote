@@ -177,7 +177,7 @@ class ProgrammesController extends Controller
                     }
                     else{
                         $nouvabnt->type_mutation = '20E';
-                        $nouvabnt->Compteur = $abonne->COMPTEUR;
+                        $nouvabnt->Compteur = '999999';
                         $nouvabnt->PS = $abonne->PS;
                     }
                     $nouvabnt->type_pre_post = (!isset($abonne->groupe)||(trim($abonne->groupe)=='')) ?  'PRE' : 'POS'; // Remplir selon les besoins
@@ -195,11 +195,11 @@ class ProgrammesController extends Controller
                 }else{
                     if($abonne->ETAT_ABONNE == '9'){
                         $existingNouvabnt->type_mutation = '10E'; // Remplir selon les besoins
-                        $existingNouvabnt->Compteur = '99999';
+                        $existingNouvabnt->Compteur = '999999';
                     }
                     else{
                         $existingNouvabnt->type_mutation = '20E';
-                        $existingNouvabnt->Compteur = $abonne->COMPTEUR;
+                        $existingNouvabnt->Compteur = '999999';
                     }
                     $existingNouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
                     $existingNouvabnt->save();

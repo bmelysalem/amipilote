@@ -172,19 +172,21 @@ class ProgrammesController extends Controller
                     $nouvabnt->TYPE_BRANCHEMENT = substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M';
                     if($abonne->ETAT_ABONNE == '9'){
                         $nouvabnt->type_mutation = '10E'; // Remplir selon les besoins
-                        $nouvabnt->Compteur = '99999';
+                        $nouvabnt->Compteur = '999999';
+                        $nouvabnt->PS = $abonne->PS;
                     }
                     else{
                         $nouvabnt->type_mutation = '20E';
                         $nouvabnt->Compteur = $abonne->COMPTEUR;
+                        $nouvabnt->PS = '6';
                     }
                     $nouvabnt->type_pre_post = 'PRE'; // Remplir selon les besoins
 
                     //$nouvabnt->DATEPOSE = $detail->date_saisie;
                     //$nouvabnt->OBSERVATIONS = '...'; // Remplir selon les besoins
                     $nouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
-                    $nouvabnt->PS = $abonne->PS;
-                    $nouvabnt->TELEPHONE_01 = $abonne->TELEPHONE_01;
+
+                    $nouvabnt->TELEPHONE_01 = '40000000';
                     //$nouvabnt->statut = '...'; // Remplir selon les besoins
                     $nouvabnt->gps_lat = $abonne->LATITUDE;
                     $nouvabnt->gps_long = $abonne->LONGITUDE;

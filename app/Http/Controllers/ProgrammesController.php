@@ -178,7 +178,7 @@ class ProgrammesController extends Controller
                     $nouvabnt->Compteur = $abonne->COMPTEUR;
                     //$nouvabnt->DATEPOSE = $detail->date_saisie;
                     //$nouvabnt->OBSERVATIONS = '...'; // Remplir selon les besoins
-                    $nouvabnt->TARIF = (isset($abonne->TARIF) &&  $abonne->TARIF!='') ? $abonne->TARIF : '5106' ;
+                    $nouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
                     $nouvabnt->PS = $abonne->PS;
                     $nouvabnt->TELEPHONE_01 = $abonne->TELEPHONE_01;
                     //$nouvabnt->statut = '...'; // Remplir selon les besoins

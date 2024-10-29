@@ -157,7 +157,7 @@ class ProgrammesController extends Controller
                     $changements->compteur_crm_type = $abonne->TYPE_COMPTEUR;
                     $changements->compteur_crm_index = $abonne->INDEXE;
                     $changements->compteur_crm_ps = $abonne->PS;
-                    $changements->mode_paiement = 'PRE'; // Remplir avec une valeur appropriée
+                    $changements->mode_paiement = (!isset($abonne->groupe)||(trim($abonne->groupe)=='')) ?  'PRE' : 'POS';; // Remplir avec une valeur appropriée
                     $changements->branch_crm = substr($abonne->CODE_BRANCHEMENT, 0, 1); // Première lettre du branchement
                     $changements->save();
                 }
@@ -173,14 +173,14 @@ class ProgrammesController extends Controller
                     if($abonne->ETAT_ABONNE == '9'){
                         $nouvabnt->type_mutation = '10E'; // Remplir selon les besoins
                         $nouvabnt->Compteur = '999999';
-                        $nouvabnt->PS = $abonne->PS;
+                        $nouvabnt->PS = '06';
                     }
                     else{
                         $nouvabnt->type_mutation = '20E';
                         $nouvabnt->Compteur = $abonne->COMPTEUR;
-                        $nouvabnt->PS = '6';
+                        $nouvabnt->PS = $abonne->PS;
                     }
-                    $nouvabnt->type_pre_post = 'PRE'; // Remplir selon les besoins
+                    $nouvabnt->type_pre_post = (!isset($abonne->groupe)||(trim($abonne->groupe)=='')) ?  'PRE' : 'POS'; // Remplir selon les besoins
 
                     //$nouvabnt->DATEPOSE = $detail->date_saisie;
                     //$nouvabnt->OBSERVATIONS = '...'; // Remplir selon les besoins

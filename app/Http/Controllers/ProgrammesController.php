@@ -170,12 +170,16 @@ class ProgrammesController extends Controller
                     $nouvabnt->REFERENCE = $abonne->REFERENCE;
                     $nouvabnt->Adresse = $abonne->ADRESSE;
                     $nouvabnt->TYPE_BRANCHEMENT = substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M';
-                    if($abonne->ETAT_ABONNE == '9')
+                    if($abonne->ETAT_ABONNE == '9'){
                         $nouvabnt->type_mutation = '10E'; // Remplir selon les besoins
-                    else
+                        $nouvabnt->Compteur = '99999';
+                    }
+                    else{
                         $nouvabnt->type_mutation = '20E';
+                        $nouvabnt->Compteur = $abonne->COMPTEUR;
+                    }
                     $nouvabnt->type_pre_post = 'PRE'; // Remplir selon les besoins
-                    $nouvabnt->Compteur = $abonne->COMPTEUR;
+
                     //$nouvabnt->DATEPOSE = $detail->date_saisie;
                     //$nouvabnt->OBSERVATIONS = '...'; // Remplir selon les besoins
                     $nouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
@@ -186,7 +190,19 @@ class ProgrammesController extends Controller
                     $nouvabnt->gps_long = $abonne->LONGITUDE;
                     //$nouvabnt->cree_ds_crm = '...'; // Remplir selon les besoins
                     $nouvabnt->save();
+                }else{
+                    if($abonne->ETAT_ABONNE == '9'){
+                        $existingNouvabnt->type_mutation = '10E'; // Remplir selon les besoins
+                        $existingNouvabnt->Compteur = '99999';
+                    }
+                    else{
+                        $existingNouvabnt->type_mutation = '20E';
+                        $existingNouvabnt->Compteur = $abonne->COMPTEUR;
+                    }
+                    $existingNouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
+                    $existingNouvabnt->save();
                 }
+
             }
         }
 

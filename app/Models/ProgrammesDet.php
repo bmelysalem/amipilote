@@ -37,4 +37,12 @@ class ProgrammesDet extends Model
     {
         return $this->belongsTo(Abonnes::class, 'REFERENCE', 'REFERENCE');
     }
+    public function changementLocal()
+    {
+        return $this->hasOne(ChangementsLocal::class, 'IdFiche', 'idprogemesdet');
+    }
+    public function nouvabnt()
+    {
+        return $this->hasOne(Nouvabnt::class, 'REFERENCE', 'REFERENCE');
+    }
 }

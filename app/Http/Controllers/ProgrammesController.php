@@ -193,16 +193,16 @@ class ProgrammesController extends Controller
                     //$nouvabnt->cree_ds_crm = '...'; // Remplir selon les besoins
                     $nouvabnt->save();
                 }else{
-                    if($abonne->ETAT_ABONNE == '9'){
-                        $existingNouvabnt->type_mutation = '10E'; // Remplir selon les besoins
-                        $existingNouvabnt->Compteur = '999999';
-                    }
-                    else{
-                        $existingNouvabnt->type_mutation = '20E';
-                        $existingNouvabnt->Compteur = '999999';
-                    }
-                    $existingNouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
-                    $existingNouvabnt->save();
+                    // if($abonne->ETAT_ABONNE == '9'){
+                    //     $existingNouvabnt->type_mutation = '10E'; // Remplir selon les besoins
+                    //     $existingNouvabnt->Compteur = '999999';
+                    // }
+                    // else{
+                    //     $existingNouvabnt->type_mutation = '20E';
+                    //     $existingNouvabnt->Compteur = '999999';
+                    // }
+                    // $existingNouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
+                    // $existingNouvabnt->save();
                 }
 
             }

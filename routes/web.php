@@ -18,6 +18,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/programmes/{programmeId}/changements', [App\Http\Controllers\ProgrammesController::class, 'storeChangementsLocal'])->name('programmes.storeChangementsLocal');
     Route::delete('/programmes/{programmeId}/programmedet/{programmedetId}', [App\Http\Controllers\ProgrammesController::class, 'deleteProgrammeDet'])->name('programmes.deleteProgrammesDet');
 
+    //service cle
+    Route::get('/calculate-key', [App\Http\Controllers\KeyCalculationController::class, 'calculateForm']);
+    Route::post('/calculate-key', [App\Http\Controllers\KeyCalculationController::class, 'calculate']);
+
 });
 
 Route::get('/dashboard', function () {

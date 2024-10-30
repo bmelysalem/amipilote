@@ -127,13 +127,14 @@
                <!-- Section Nouvabnt (Akilee) -->
                @isset($detail->nouvabnt)
                    <hr>
-                   <h5>Informations Nouvabnt (Akilee)</h5>
+                   <h5>Informations Nouvabnt (Akilee) : Mutation ( {{ $detail->nouvabnt->type_mutation }})</h5>
                    <p><strong>Adresse :</strong> {{ $detail->nouvabnt->Adresse }}</p>
                    <p><strong>Type de Branchement :</strong> {{ $detail->nouvabnt->TYPE_BRANCHEMENT }}</p>
                    <p><strong>Compteur :</strong> {{ $detail->nouvabnt->Compteur }}</p>
                    <p><strong>Date de Pose :</strong> {{ $detail->nouvabnt->DATEPOSE }}</p>
                    <p><strong>Tarif :</strong> {{ $detail->nouvabnt->TARIF }}</p>
                    <p><strong>Observations :</strong> {{ $detail->nouvabnt->OBSERVATIONS }}</p>
+                   <p><strong>PS :</strong> {{ $detail->nouvabnt->ps }}</p>
                    <!-- Ajoute d'autres champs nécessaires provenant de Nouvabnt -->
                @endisset
            </div>

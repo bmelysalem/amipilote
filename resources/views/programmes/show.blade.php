@@ -134,7 +134,7 @@
                    <p><strong>Date de Pose :</strong> {{ $detail->nouvabnt->DATEPOSE }}</p>
                    <p><strong>Tarif :</strong> {{ $detail->nouvabnt->TARIF }}</p>
                    <p><strong>Observations :</strong> {{ $detail->nouvabnt->OBSERVATIONS }}</p>
-                   <p><strong>PS :</strong> {{ $detail->nouvabnt->ps }}</p>
+                   <p><strong>PS :</strong> {{ $detail->nouvabnt->PS }}</p>
                    <!-- Ajoute d'autres champs nécessaires provenant de Nouvabnt -->
                @endisset
            </div>

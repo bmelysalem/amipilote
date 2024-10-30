@@ -107,7 +107,7 @@
                    <p><strong>Tarif :</strong> {{ $detail->abonne->TARIF }}</p>
                    <p><strong>Groupe :</strong> {{ $detail->abonne->GROUPE }}</p>
                    <p><strong>Code Branchement :</strong> {{ $detail->abonne->CODE_BRANCHEMENT }}</p>
-                   <p><strong>Compteur :</strong> {{ $detail->abonne->CODE_COMPTEUR }}</p>
+                   <p><strong>Compteur :</strong> {{ $detail->abonne->COMPTEUR }}</p>
                    <p><strong>Latitude :</strong> {{ $detail->abonne->LATITUDE }}</p>
                    <p><strong>Longitude :</strong> {{ $detail->abonne->LONGITUDE }}</p>
                @endisset

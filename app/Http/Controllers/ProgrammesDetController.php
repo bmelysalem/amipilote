@@ -62,6 +62,30 @@ class ProgrammesDetController extends Controller
 
         return redirect()->route('programmes.show', $programmeId)->with('success', 'Toutes les fiches ont été générées dans un seul fichier PDF.');
     }
+    public function generateFichesByList(Request $request)
+    {
+
+        // Vérifier que la liste d'ID n'est pas vide
+        $abonneIds = $request->input('abonne_ids');
+        if (empty($abonneIds) || !is_array($abonneIds)) {
+            return redirect()->back()->with('error', 'Veuillez sélectionner au moins un abonné pour générer les fiches.');
+        }
+
+        // Récupérer les abonnés dont les ids sont dans la liste fournie
+        $abonnes = ProgrammesDet::whereIn('idprogemesdet', $abonneIds)->with('abonne')->get();
+
+        // Vérifier que des abonnés ont été trouvés
+        if ($abonnes->isEmpty()) {
+            return redirect()->back()->with('error', 'Aucun abonné trouvé pour les ID sélectionnés.');
+        }
+
+        // Générer un seul PDF pour toutes les fiches sélectionnées
+        $pdf = PDF::loadView('fichier-pose.pose_multiple', compact('abonnes'));
+
+        // Télécharger le fichier PDF
+        return $pdf->download('fichier_pose_abonne_list.pdf');
+    }
+
     public function downloadFiches($programmeId)
     {
         // Récupérer le programme

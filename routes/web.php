@@ -17,6 +17,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/programmes/{programme}/add-all-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addAllProgrammesDet'])->name('add.all.programmedet');
     Route::post('/programmes/{programmeId}/changements', [App\Http\Controllers\ProgrammesController::class, 'storeChangementsLocal'])->name('programmes.storeChangementsLocal');
     Route::delete('/programmes/{programmeId}/programmedet/{programmedetId}', [App\Http\Controllers\ProgrammesController::class, 'deleteProgrammeDet'])->name('programmes.deleteProgrammesDet');
+    Route::post('/generate-fiches-list', [App\Http\Controllers\ProgrammesDetController::class, 'generateFichesByList'])->name('generateFichesByList');
 
     //service cle
     Route::get('/calculate-key', [App\Http\Controllers\KeyCalculationController::class, 'calculateForm']);

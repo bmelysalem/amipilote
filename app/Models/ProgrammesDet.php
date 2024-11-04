@@ -43,6 +43,17 @@ class ProgrammesDet extends Model
     }
     public function nouvabnt()
     {
-        return $this->hasOne(Nouvabnt::class, 'REFERENCE', 'REFERENCE');
+        // Charger l'abonné associé
+        $abonne = $this->abonne;
+
+        if ($abonne) {
+            // Si l'état est 3, utiliser `successeur` pour rechercher dans Nouvabnt
+            $reference = $abonne->ETAT_ABONNE == 3 ? $abonne->successeur : $this->REFERENCE;
+
+            // Rechercher dans Nouvabnt avec la référence appropriée
+            return Nouvabnt::where('REFERENCE', $reference)->first();
+        }
+
+        return null; // Retourner null si l'abonné n'est pas trouvé
     }
 }

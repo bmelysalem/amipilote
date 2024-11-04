@@ -37,18 +37,19 @@
                @endisset
 
                <!-- Section Nouvabnt (Akilee) -->
-               @isset($detail->nouvabnt)
+               @if($detail->nouvabnt() != null)
                    <hr>
-                   <h5>Informations Nouvabnt (Akilee) : Mutation ( {{ $detail->nouvabnt->type_mutation }})</h5>
-                   <p><strong>Adresse :</strong> {{ $detail->nouvabnt->Adresse }}</p>
-                   <p><strong>Type de Branchement :</strong> {{ $detail->nouvabnt->TYPE_BRANCHEMENT }}</p>
-                   <p><strong>Compteur :</strong> {{ $detail->nouvabnt->Compteur }}</p>
-                   <p><strong>Date de Pose :</strong> {{ $detail->nouvabnt->DATEPOSE }}</p>
-                   <p><strong>Tarif :</strong> {{ $detail->nouvabnt->TARIF }}</p>
-                   <p><strong>Observations :</strong> {{ $detail->nouvabnt->OBSERVATIONS }}</p>
-                   <p><strong>PS :</strong> {{ $detail->nouvabnt->PS }}</p>
+                   <h5>Informations Nouvabnt (Akilee) : Mutation ( {{ $detail->nouvabnt()->type_mutation }})</h5>
+                   <p><strong>Reference :</strong> {{ $detail->nouvabnt()->REFERENCE }}</p>
+                   <p><strong>Adresse :</strong> {{ $detail->nouvabnt()->Adresse }}</p>
+                   <p><strong>Type de Branchement :</strong> {{ $detail->nouvabnt()->TYPE_BRANCHEMENT }}</p>
+                   <p><strong>Compteur :</strong> {{ $detail->nouvabnt()->Compteur }}</p>
+                   <p><strong>Date de Pose :</strong> {{ $detail->nouvabnt()->DATEPOSE }}</p>
+                   <p><strong>Tarif :</strong> {{ $detail->nouvabnt()->TARIF }}</p>
+                   <p><strong>Observations :</strong> {{ $detail->nouvabnt()->OBSERVATIONS }}</p>
+                   <p><strong>PS :</strong> {{ $detail->nouvabnt()->PS }}</p>
                    <!-- Ajoute d'autres champs nécessaires provenant de Nouvabnt -->
-               @endisset
+               @endif
            </div>
            <div class="modal-footer">
                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>

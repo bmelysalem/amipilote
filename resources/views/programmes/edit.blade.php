@@ -241,6 +241,7 @@
                             <thead>
                                 <tr>
                                     <th>Référence</th>
+                                    <th>Adresse</th>
                                     <th>Nom</th>
                                     <th>Action</th>
                                 </tr>
@@ -250,6 +251,7 @@
 
                                 // Ajouter une ligne pour chaque abonné trouvé
                                 data.forEach(function(abonne) {
+                                    let ref = abonne.REFERENCE;
                                     let etat = abonne
                                         .ETAT_ABONNE; // Supposons que l'état de l'abonné soit stocké dans cette variable
                                     let spanLabel = ''; // Variable pour le texte du span
@@ -260,6 +262,16 @@
                                         spanLabel = 'Changement';
                                         spanClass = 'green';
                                     } else if (abonne.ETAT_ABONNE == 3) {
+                                        // Calculer ou récupérer le successeur
+                                        ref = abonne.successeur;
+
+                                        // Vérifier si le successeur existe déjà dans `data`
+                                        const successeurExists = data.some(item => item.REFERENCE === ref);
+
+                                        // Si le successeur est présent, passer au prochain élément
+                                        if (successeurExists) return;
+
+                                        // Sinon, définir l’étiquette et la classe du span
                                         spanLabel = 'Succession';
                                         spanClass = 'red';
                                     } else if (abonne.ETAT_ABONNE == 9) {
@@ -273,6 +285,7 @@
                                     table += `
                             <tr>
                                 <td>${abonne.REFERENCE}</td>
+                                <td>${abonne.ADRESSE}</td>
                                 <td>${abonne.NOM}</td>
                                 <td><button type="button" onclick="addProgrammeDet('${abonne.REFERENCE}')" class="btn btn-success" style="border double 1px ${spanClass}">${spanLabel}</button></td>
                             </tr>
@@ -297,7 +310,7 @@
                         .catch(error => {
                             // Masquer le loader en cas d'erreur
                             document.getElementById('loader').style.display = 'none';
-                            alert('Erreur lors de la recherche.');
+                            alert(error);
                         });
                 } else {
                     alert('Veuillez entrer au moins 4 caractères.');

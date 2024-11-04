@@ -35,7 +35,7 @@
 <div class="row">
     <div class="left">
         <div class="left "><label>Reference</label>
-            <div class="field bordered">{{ $fiche->REFERENCE }}</div>
+            <div class="field bordered">{{ $abonne->ETAT_ABONNE == 3 ?$abonne->successeur : $fiche->REFERENCE }}</div>
         </div>
     </div>
     <div class="right">
@@ -66,7 +66,7 @@
 <div class="row">
     <div class="left">
         <div class="left "><label>TELEPHONES</label>
-            <div class="field bordered">{{ $abonne->REFERENCE }}</div>
+            <div class="field bordered">{{ $abonne->TELEPHONE_01 }}</div>
         </div>
     </div>
     <div class="right">
@@ -124,7 +124,7 @@
     <div class="left">
         <div>
             <div class="left mb5"><label style="width: 80px">Ancien Compteur (FAB) </label>
-                <div class="field bordered">{{ $abonne->COMPTEUR}}</div>
+                <div class="field bordered">{{  $abonne->ETAT_ABONNE == 3? '999999': $abonne->COMPTEUR}}</div>
             </div>
             <div class="clear"></div>
         </div>

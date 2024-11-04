@@ -162,12 +162,19 @@ class ProgrammesController extends Controller
                     $changements->save();
                 }
             } elseif (in_array($abonne->ETAT_ABONNE, [9, 3])) {
+
+                $reference = $abonne->REFERENCE;
+                // Si l'état est 3, utiliser `successeur` comme référence
+                if ($abonne->ETAT_ABONNE == 3) {
+                    $reference = $abonne->successeur;
+                }
+
                 // Remplir Nouvabnt si l'état est 9 ou 3
-                $existingNouvabnt = Nouvabnt::where('REFERENCE', $abonne->REFERENCE)->first();
+                $existingNouvabnt = Nouvabnt::where('REFERENCE', $reference)->first();
                 if (!$existingNouvabnt) {
                     $nouvabnt = new Nouvabnt();
                     $nouvabnt->DATE = now(); // ou une autre valeur
-                    $nouvabnt->REFERENCE = $abonne->REFERENCE;
+                    $nouvabnt->REFERENCE = $reference;
                     $nouvabnt->Adresse = $abonne->ADRESSE;
                     $nouvabnt->TYPE_BRANCHEMENT = substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M';
                     if($abonne->ETAT_ABONNE == '9'){
@@ -176,6 +183,7 @@ class ProgrammesController extends Controller
                         $nouvabnt->PS = '06';
                     }
                     else{
+
                         $nouvabnt->type_mutation = '20E';
                         $nouvabnt->Compteur = '999999';
                         $nouvabnt->PS = $abonne->PS;

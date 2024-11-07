@@ -106,16 +106,16 @@
                                             Voir Détails
                                         </button>
                                         <!-- Formulaire de suppression -->
-                                        @if (!$programme->programme_valide)
-                                            <form
-                                                action="{{ route('programmes.deleteProgrammesDet', [$programme->idprogrammes, $detail->idprogemesdet]) }}"
-                                                method="POST" style="display:inline;"
-                                                onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette ligne ?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Supprimer</button>
-                                            </form>
-                                        @endif
+
+                                        <form
+                                            action="{{ route('programmes.deleteProgrammesDet', [$programme->idprogrammes, $detail->idprogemesdet]) }}"
+                                            method="POST" style="display:inline;"
+                                            onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette ligne ?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                        </form>
+
 
                                         <!-- Modal Bootstrap -->
                                         <div class="modal fade" id="abonneModal{{ $detail->REFERENCE }}" tabindex="-1"

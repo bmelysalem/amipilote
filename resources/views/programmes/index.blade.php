@@ -36,7 +36,9 @@
                                 <td>
                                     <a href="{{ route('programmes.show', $programme->idprogrammes) }}" class="btn btn-info">Voir Détails</a>
                                     <a href="{{ route('programmes.edit', $programme->idprogrammes) }}" class="btn btn-warning">Modifier</a>
-                                    <form action="{{ route('programmes.destroy', $programme->idprogrammes) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('programmes.destroy', $programme->idprogrammes) }}"
+                                        method="POST" style="display:inline;"
+                                        onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette ligne ?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Supprimer</button>

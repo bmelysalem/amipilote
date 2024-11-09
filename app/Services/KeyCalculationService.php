@@ -101,8 +101,8 @@ class KeyCalculationService
 
         // Return the calculated key as per the function
         return [
-            'td1'=> $totD1,
-            'td2'=> $totD2,
+            //'td1'=> $totD1,
+            //'td2'=> $totD2,
             'sRang' => $this->srang,
             'sC1' => $this->sc1,
             'sC2' => $this->sc2

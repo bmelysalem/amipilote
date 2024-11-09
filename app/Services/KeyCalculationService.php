@@ -6,6 +6,11 @@ class KeyCalculationService
 {
     protected $imax;
     protected $divis;
+    protected $sref;
+    protected $srang;
+    protected $zrang;
+    protected $sc1;
+    protected $sc2;
 
     public function calculateKey($reference, $function)
     {
@@ -26,25 +31,26 @@ class KeyCalculationService
         // Perform calculations
         $totD1 = 0;
         $totD2 = 0;
-        $reference = ' '.$reference;
-
-        $rang = $reference[10] +1;
-
-        if($rang > '5'){
+        //$reference = ' '.$reference;
+        $rang = $reference[9] +1;
+        if ($rang > '5') {
             $rang = $rang - 5;
-            $reference = substr_replace($reference, (string)$rang, 10, 1);
         }
-        if($rang == '0'){
-            $reference = substr_replace($reference, '5', 10, 1);
+        $reference = substr_replace($reference, (string)$rang , 9, 1);
+
+        $this->zrang = $reference[9];
+
+        if ($reference[9] > '5') {
+            $reference = substr_replace($reference, (string)($this->zrang - 5), 9, 1);
+        }
+        if ($reference[9] == '0') {
+            $reference = substr_replace($reference, '5', 9, 1);
         }
 
-        $reference = substr_replace($reference, (string)$rang, 10, 1);
-
-
-
+        // $reference = substr_replace($reference, (string)$rang, 10, 1);
 
         // Convert characters in reference if alphabetic and calculate totals
-        for ($i = 1; $i <= $this->imax; $i++) {
+        for ($i = 0; $i <= $this->imax; $i++) {
             $char = substr($reference, $i, 1);
             $numericVal = $this->convertAlphaToNumeric($char);
 
@@ -56,24 +62,59 @@ class KeyCalculationService
         $d1 = $totD1 % $this->divis;
         $d2 = $totD2 % $this->divis;
 
+        if ($reference[9] >= '5') {
+            $this->srang = 0;
+        } else {
+            $this->srang = $reference[9] + 5;
+        }
+
+        if ($d1 == 10) {
+            // TEST-10-D2 logic
+            if ($d2 == 10) {
+                $this->sc1 = 9;
+                $this->sc2 = 9;
+                //doit quiter!
+            } elseif ($d2 == 0) {
+                $this->sc1 = 9;
+                $this->sc2 = 8;
+                $reference = substr_replace($reference, (string)($this->zrang), 9, 1);
+            } else {
+                $this->sc1 = 0;
+                $this->sc2 = $d2;
+                $reference = substr_replace($reference, (string)($this->zrang), 9, 1);
+            }
+        } elseif ($d2 == 10) {
+            // TEST-0-D1 logic
+            if ($d1 == 0) {
+                $this->sc1 = 8;
+                $this->sc2 = 9;
+            } else {
+                $this->sc1 = $d1;
+                $this->sc2 = 0;
+            }
+        } else {
+            $this->srang = $reference[9];
+            $this->sc1 = $d1;
+            $this->sc2 = $d2;
+        }
         //return $d1;
 
         // Return the calculated key as per the function
         return [
-            'sRang' => $rang ,
-            'sC1' => $d1 ,
-            'sC2' => $d2
+            'td1'=> $totD1,
+            'td2'=> $totD2,
+            'sRang' => $this->srang,
+            'sC1' => $this->sc1,
+            'sC2' => $this->sc2
         ];
-        return $this->calculateSValues($reference, $d1, $d2);
-        return $this->formatResult($d1, $d2, $function);
     }
 
     private function validateReference($reference, $function)
     {
         if ($function == "0") {
             return ctype_digit(substr($reference, 0, 2)) &&
-                   ctype_digit(substr($reference, 4, 3)) &&
-                   ctype_digit(substr($reference, 7, 3));
+                ctype_digit(substr($reference, 4, 3)) &&
+                ctype_digit(substr($reference, 7, 3));
         } elseif ($function == "1") {
             return ctype_digit(substr($reference, 0, 5));
         } elseif ($function == "2") {
@@ -86,22 +127,31 @@ class KeyCalculationService
     {
         if ($function == "0") {
             $this->divis = 11;
-            $this->imax = 10;
+            $this->imax = 9;
         } elseif ($function == "1") {
             $this->divis = 10;
-            $this->imax = 5;
+            $this->imax = 4;
         } else {
             $this->divis = 11;
-            $this->imax = 6;
+            $this->imax = 5;
         }
     }
 
     private function convertAlphaToNumeric($char)
     {
         $conversionTable = [
-            'A' => 0, 'B' => 1, 'C' => 2, 'D' => 3, 'E' => 4,
-            'F' => 5, 'G' => 6, 'H' => 7, 'I' => 8, 'J' => 9,
-            'K' => 1, 'L' => 2
+            'A' => 0,
+            'B' => 1,
+            'C' => 2,
+            'D' => 3,
+            'E' => 4,
+            'F' => 5,
+            'G' => 6,
+            'H' => 7,
+            'I' => 8,
+            'J' => 9,
+            'K' => 1,
+            'L' => 2
         ];
 
         $char = strtoupper($char);
@@ -197,5 +247,4 @@ class KeyCalculationService
             ];
         }
     }
-
 }

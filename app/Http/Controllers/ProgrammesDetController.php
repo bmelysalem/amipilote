@@ -106,6 +106,7 @@ class ProgrammesDetController extends Controller
 
     public function downloadFiches($programmeId)
     {
+        return $programmeId;
         // Récupérer le programme
         $programme = Programmes::findOrFail($programmeId);
 

@@ -121,7 +121,12 @@ class ProgrammesDetController extends Controller
 
         // Vérifier si le fichier existe
         if (file_exists($filePath)) {
-            return response()->download($filePath);
+            return response()->download($filePath, "fiches_poses_{$programmeId}.pdf", [
+                'Cache-Control' => 'no-cache, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
+            ]);
+            //return response()->download($filePath);
         } else {
             return redirect()->back()->with('error', 'Le fichier PDF des fiches n\'existe pas.');
         }

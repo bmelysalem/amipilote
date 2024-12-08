@@ -6,6 +6,7 @@ use App\Models\ProgrammesDet;
 use App\Models\Programmes;
 use App\Models\Abonnes;
 use App\Jobs\GenerateFichesJob;
+use Illuminate\Support\Facades\Log; // Importation de Log
 use PDF;
 // Import de la façade DOMPDF
 use Illuminate\Http\Request;
@@ -29,15 +30,32 @@ class ProgrammesDetController extends Controller
         // Télécharger le fichier PDF
         return $pdf->download('fichier_pose_abonne_' . $abonne->REFERENCE . '.pdf');
     }
-    public function generateFichesNEW($programmeId)
-    {
-        // Dispatch le job pour générer les fiches
-        GenerateFichesJob::dispatch($programmeId);
-
-        // Retourner une réponse immédiate pour indiquer que le processus a démarré
-        return redirect()->route('programmes.show', $programmeId)->with('success', 'La génération des fiches a été lancée. Vous recevrez une notification une fois terminé.');
-    }
     public function generateFiches($programmeId)
+    {
+        try {
+            // Vérifier si le programme existe
+            $programme = Programme::findOrFail($programmeId);
+
+            // Dispatch le job pour générer les fiches
+            GenerateFichesJob::dispatch($programmeId);
+
+            // Ajouter un log pour le suivi
+            Log::info("Génération des fiches lancée pour le programme ID: {$programmeId}");
+
+            // Retourner une réponse pour indiquer que le processus a démarré
+            return redirect()->route('programmes.show', $programmeId)
+                ->with('success', 'La génération des fiches a été lancée. Vous recevrez une notification une fois terminé.');
+        } catch (\Exception $e) {
+            // Ajouter un log en cas d'erreur
+            Log::error("Erreur lors de la génération des fiches pour le programme ID: {$programmeId} - " . $e->getMessage());
+
+            // Retourner une réponse d'erreur
+            return redirect()->route('programmes.show', $programmeId)
+                ->with('error', 'Une erreur est survenue lors du lancement de la génération des fiches. Veuillez réessayer.');
+        }
+    }
+
+    public function generateFichesOld($programmeId)
     {
         // Récupérer le programme
         $programme = Programmes::findOrFail($programmeId);

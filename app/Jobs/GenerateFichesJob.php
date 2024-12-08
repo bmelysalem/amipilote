@@ -43,30 +43,56 @@ class GenerateFichesJob implements ShouldQueue
             // Récupérer le programme
             $programme = Programmes::findOrFail($this->programmeId);
 
-            // Vérifier si les fiches ont déjà été générées
-            if ($programme->fiches_generees) {
-                Log::info("Les fiches pour le programme {$this->programmeId} ont déjà été générées.");
+            // Vérifier si la génération est déjà en cours
+            if ($programme->generation_in_progress) {
+                Log::info("La génération des fiches pour le programme {$this->programmeId} est déjà en cours.");
                 return;
+            }
+
+            // Marquer le début de la génération
+            $programme->generation_in_progress = true;
+            $programme->save();
+
+            // Chemin du fichier PDF généré
+            $pdfPath = storage_path("fiches/fiches_poses_{$this->programmeId}.pdf");
+
+            // Supprimer le fichier existant si présent
+            if (file_exists($pdfPath)) {
+                unlink($pdfPath);
+                Log::info("Fichier existant supprimé : {$pdfPath}");
             }
 
             // Récupérer les abonnés liés à ce programme
             $abonnes = ProgrammesDet::where('idprogrammes', $this->programmeId)->with('abonne')->get();
 
+            // Vérification : s'assurer qu'il y a des abonnés
+            if ($abonnes->isEmpty()) {
+                Log::warning("Aucun abonné trouvé pour le programme {$this->programmeId}. Annulation de la génération.");
+                $programme->generation_in_progress = false;
+                $programme->save();
+                return;
+            }
+
             // Générer un seul PDF pour toutes les fiches
             $pdf = PDF::loadView('fichier-pose.pose_multiple', compact('abonnes'));
 
             // Sauvegarder le PDF consolidé
-            $pdfPath = storage_path("fiches/fiches_poses_{$this->programmeId}.pdf");
             $pdf->save($pdfPath);
 
             // Marquer le programme comme ayant ses fiches générées
             $programme->fiches_generees = true;
+            $programme->generation_in_progress = false;
             $programme->save();
 
-            Log::info("Fiches pour le programme {$this->programmeId} générées avec succès.");
-
+            Log::info("Fiches pour le programme {$this->programmeId} générées avec succès. Fichier : {$pdfPath}");
         } catch (\Exception $e) {
             Log::error("Erreur lors de la génération des fiches pour le programme {$this->programmeId}: " . $e->getMessage());
+
+            // Réinitialiser l'état de la génération en cas d'erreur
+            if (isset($programme)) {
+                $programme->generation_in_progress = false;
+                $programme->save();
+            }
         }
     }
 }

@@ -64,7 +64,7 @@ class ProgrammesController extends Controller
 
             return $request->expectsJson()
                 ? response()->json(['message' => 'Programme créé avec succès.'], 201)
-                : redirect()->route('programmes.edit',[ $programme->idprogrammes])->with('success', 'Programme créé avec succès.');
+                : redirect()->route('programmes.edit', [$programme->idprogrammes])->with('success', 'Programme créé avec succès.');
         } catch (ValidationException $e) {
             return response()->json(['message' => 'Validation failed', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -157,7 +157,7 @@ class ProgrammesController extends Controller
                     $changements->compteur_crm_type = $abonne->TYPE_COMPTEUR;
                     $changements->compteur_crm_index = $abonne->INDEXE;
                     $changements->compteur_crm_ps = $abonne->PS;
-                    $changements->mode_paiement = (!isset($abonne->groupe)||(trim($abonne->groupe)=='')) ?  'PRE' : 'POS';; // Remplir avec une valeur appropriée
+                    $changements->mode_paiement = (!isset($abonne->groupe) || (trim($abonne->groupe) == '')) ?  'PRE' : 'POS';; // Remplir avec une valeur appropriée
                     $changements->branch_crm = substr($abonne->CODE_BRANCHEMENT, 0, 1); // Première lettre du branchement
                     $changements->save();
                 }
@@ -176,23 +176,22 @@ class ProgrammesController extends Controller
                     $nouvabnt->DATE = now(); // ou une autre valeur
                     $nouvabnt->REFERENCE = $reference;
                     $nouvabnt->Adresse = $abonne->ADRESSE;
-                    $nouvabnt->TYPE_BRANCHEMENT = substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M';
-                    if($abonne->ETAT_ABONNE == '9'){
+                    $nouvabnt->TYPE_BRANCHEMENT = substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T' : 'M';
+                    if ($abonne->ETAT_ABONNE == '9') {
                         $nouvabnt->type_mutation = '10E'; // Remplir selon les besoins
                         $nouvabnt->Compteur = '999999';
                         $nouvabnt->PS = '06';
-                    }
-                    else{
+                    } else {
 
                         $nouvabnt->type_mutation = '20E';
                         $nouvabnt->Compteur = '999999';
                         $nouvabnt->PS = $abonne->PS;
                     }
-                    $nouvabnt->type_pre_post = (!isset($abonne->groupe)||(trim($abonne->groupe)=='')) ?  'PRE' : 'POS'; // Remplir selon les besoins
+                    $nouvabnt->type_pre_post = (!isset($abonne->groupe) || (trim($abonne->groupe) == '')) ?  'PRE' : 'POS'; // Remplir selon les besoins
 
                     //$nouvabnt->DATEPOSE = $detail->date_saisie;
                     //$nouvabnt->OBSERVATIONS = '...'; // Remplir selon les besoins
-                    $nouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
+                    $nouvabnt->TARIF = (!isset($abonne->TARIF) || (trim($abonne->TARIF) == '')) ?  '5106' : trim($abonne->TARIF);
 
                     $nouvabnt->TELEPHONE_01 = '40000000';
                     //$nouvabnt->statut = '...'; // Remplir selon les besoins
@@ -202,9 +201,9 @@ class ProgrammesController extends Controller
                     $nouvabnt->save();
                 }
                 //elseif($existingNouvabnt->statut != 'traite'){
-                else{
-                    if($abonne->ETAT_ABONNE == '9'){
-                        $existingNouvabnt->TYPE_BRANCHEMENT = substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M';
+                else {
+                    if ($abonne->ETAT_ABONNE == '9') {
+                        $existingNouvabnt->TYPE_BRANCHEMENT = substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T' : 'M';
                         $existingNouvabnt->type_mutation = '10E'; // Remplir selon les besoins
                         $existingNouvabnt->Compteur = '999999';
                         $existingNouvabnt->save();
@@ -216,7 +215,6 @@ class ProgrammesController extends Controller
                     // $existingNouvabnt->TARIF = (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF)  ;
                     //$existingNouvabnt->save();
                 }
-
             }
         }
 
@@ -240,6 +238,14 @@ class ProgrammesController extends Controller
             $abonne = Abonnes::where('REFERENCE', $reference)->first();
 
             if ($abonne) {
+                // Verification si l'abbonné est resilié a un solde
+                // Retourner les erreurs de validation si elles existent
+                if ($abonne->ETAT_ABONNE == 3 && $abonne->solde > 0)
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Abonnée est resilié avec solde :' . $abonne->solde,
+                        'errors' => 'Abonnée est resilié avec solde',
+                    ], 422);
                 // Vérifier si la référence existe déjà dans ProgrammesDet pour ce programme
                 $existing = ProgrammesDet::where('idprogrammes', $programme->idprogrammes)
                     ->where('REFERENCE', $reference)

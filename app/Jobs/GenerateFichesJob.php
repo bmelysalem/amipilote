@@ -17,8 +17,8 @@ class GenerateFichesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    // Temps limite pour l'exécution du job (3 minutes)
-    public $timeout = 180;
+    // Temps limite pour l'exécution du job (6 minutes)
+    public $timeout = 360;
 
     protected $programmeId;
 
@@ -40,6 +40,7 @@ class GenerateFichesJob implements ShouldQueue
         ini_set('memory_limit', '512M');
 
         try {
+            Log::info("HANDLING GenerateFichesJob FOR programmeId: {$this->programmeId}");
             // Récupérer le programme
             $programme = Programmes::findOrFail($this->programmeId);
 

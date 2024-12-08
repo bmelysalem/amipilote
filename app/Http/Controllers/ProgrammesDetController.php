@@ -34,7 +34,7 @@ class ProgrammesDetController extends Controller
     {
         try {
             // Vérifier si le programme existe
-            $programme = Programme::findOrFail($programmeId);
+            $programme = Programmes::findOrFail($programmeId);
 
             // Dispatch le job pour générer les fiches
             GenerateFichesJob::dispatch($programmeId);

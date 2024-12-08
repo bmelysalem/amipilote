@@ -18,25 +18,36 @@
                     <p><strong>Code Agent : </strong> {{ $programme->Code_agent }}</p>
 
                     <!-- Boutons de génération et de téléchargement -->
-                    @if($programme->programme_valide)
-                        @if(!$programme->fiches_generees)
-                            <a href="{{ route('generate-fiches', $programme->idprogrammes) }}" class="btn btn-success">
-                                Générer les fiches
-                            </a>
-                        @else
-                            <a href="{{ route('generate-fiches', $programme->idprogrammes) }}" class="btn btn-success">
-                                Re-Générer les fiches
-                            </a>
-                        @endif
-                    @endif
+@if($programme->programme_valide)
+@if(!$programme->fiches_generees && !$programme->generation_in_progress)
+    <a href="{{ route('generate-fiches', $programme->idprogrammes) }}" class="btn btn-success">
+        Générer les fiches
+    </a>
+@elseif($programme->generation_in_progress)
+    <button class="btn btn-warning" disabled>
+        Génération en cours...
+    </button>
+@else
+    <a href="{{ route('generate-fiches', $programme->idprogrammes) }}" class="btn btn-primary">
+        Re-Générer les fiches
+    </a>
+@endif
+@endif
 
-                    @if($programme->fiches_generees)
-                        <a href="{{ route('download-fiches', $programme->idprogrammes) }}" class="btn btn-success">
-                            Télécharger les fiches
-                        </a>
-                    @else
-                        <button class="btn btn-secondary" disabled>Fiches non générées</button>
-                    @endif
+@if($programme->fiches_generees && !$programme->generation_in_progress)
+<a href="{{ route('download-fiches', $programme->idprogrammes) }}" class="btn btn-success">
+    Télécharger les fiches
+</a>
+@else
+<button class="btn btn-secondary" disabled>
+    @if($programme->generation_in_progress)
+        Génération en cours...
+    @else
+        Fiches non générées
+    @endif
+</button>
+@endif
+
 
                     <!-- Formulaire pour valider le programme et envoyer les données à Akilee -->
                     @if(!$programme->programme_valide)

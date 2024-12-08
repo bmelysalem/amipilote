@@ -35,7 +35,7 @@
 @endif
 
 @if($programme->fiches_generees && !$programme->generation_in_progress)
-<a href="{{ route('download-fiches', $programme->idprogrammes) }}" class="btn btn-success">
+<a href="{{ route('download-fiches2', $programme->idprogrammes) }}" class="btn btn-success">
     Télécharger les fiches
 </a>
 @else

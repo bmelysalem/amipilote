@@ -115,7 +115,7 @@ class ProgrammesDetController extends Controller
         }
 
         // Chemin du fichier PDF consolidé
-        $filePath = storage_path("fiches/fiches_pose_{$programmeId}.pdf");
+        $filePath = storage_path("fiches/fiches_poses_{$programmeId}.pdf");
 
         // Vérifier si le fichier existe
         if (file_exists($filePath)) {

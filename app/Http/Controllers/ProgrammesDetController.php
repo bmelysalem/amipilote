@@ -35,6 +35,14 @@ class ProgrammesDetController extends Controller
         try {
             // Vérifier si le programme existe
             $programme = Programmes::findOrFail($programmeId);
+            // Vérifier si la génération est déjà en cours
+            if ($programme->generation_in_progress) {
+                Log::info("La génération des fiches pour le programme {$programmeId} est déjà en cours.");
+                return;
+            }
+            // Marquer le début de la génération
+            $programme->generation_in_progress = true;
+            $programme->save();
 
             // Dispatch le job pour générer les fiches
             GenerateFichesJob::dispatch($programmeId);
@@ -65,14 +73,6 @@ class ProgrammesDetController extends Controller
         //     return redirect()->back()->with('error', 'Les fiches pour ce programme ont déjà été générées.');
         // }
 
-        // Vérifier si la génération est déjà en cours
-        if ($programme->generation_in_progress) {
-            Log::info("La génération des fiches pour le programme {$programmeId} est déjà en cours.");
-            return;
-        }
-        // Marquer le début de la génération
-        $programme->generation_in_progress = true;
-        $programme->save();
 
         // Récupérer les abonnés liés à ce programme
         $abonnes = ProgrammesDet::where('idprogrammes', $programmeId)->with('abonne')->get();

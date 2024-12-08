@@ -117,6 +117,8 @@ class ProgrammesDetController extends Controller
         // Chemin du fichier PDF consolidé
         $filePath = storage_path("fiches/fiches_poses_{$programmeId}.pdf");
 
+        Log::info('telechargement du fichier : {$filePath}');
+
         // Vérifier si le fichier existe
         if (file_exists($filePath)) {
             return response()->download($filePath);

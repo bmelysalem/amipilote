@@ -65,6 +65,15 @@ class ProgrammesDetController extends Controller
         //     return redirect()->back()->with('error', 'Les fiches pour ce programme ont déjà été générées.');
         // }
 
+        // Vérifier si la génération est déjà en cours
+        if ($programme->generation_in_progress) {
+            Log::info("La génération des fiches pour le programme {$programmeId} est déjà en cours.");
+            return;
+        }
+        // Marquer le début de la génération
+        $programme->generation_in_progress = true;
+        $programme->save();
+
         // Récupérer les abonnés liés à ce programme
         $abonnes = ProgrammesDet::where('idprogrammes', $programmeId)->with('abonne')->get();
 
@@ -118,7 +127,7 @@ class ProgrammesDetController extends Controller
         // Chemin du fichier PDF consolidé
         $filePath = storage_path("fiches/fiches_poses_{$programmeId}.pdf");
 
-        Log::info('telechargement du fichier : {$filePath}');
+        Log::info($filePath);
 
         // Vérifier si le fichier existe
         if (file_exists($filePath)) {

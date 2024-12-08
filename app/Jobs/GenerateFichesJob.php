@@ -44,16 +44,6 @@ class GenerateFichesJob implements ShouldQueue
             // Récupérer le programme
             $programme = Programmes::findOrFail($this->programmeId);
 
-            // Vérifier si la génération est déjà en cours
-            if ($programme->generation_in_progress) {
-                Log::info("La génération des fiches pour le programme {$this->programmeId} est déjà en cours.");
-                return;
-            }
-
-            // Marquer le début de la génération
-            $programme->generation_in_progress = true;
-            $programme->save();
-
             // Chemin du fichier PDF généré
             $pdfPath = storage_path("fiches/fiches_poses_{$this->programmeId}.pdf");
 

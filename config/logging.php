@@ -81,6 +81,18 @@ return [
             'level' => env('LOG_LEVEL', 'critical'),
             'replace_placeholders' => true,
         ],
+        'mattermost' => [
+            'driver' => 'monolog',
+            'handler' => Monolog\Handler\SlackWebhookHandler::class,
+            'with' => [
+                'webhookUrl' => env('MATTERMOST_WEBHOOK_URL','https://mattermost.somelec.mr/hooks/gjrmxky6fjg3pnguhwgafi4zae'), // URL du webhook
+            ],
+            'formatter' => Monolog\Formatter\LineFormatter::class,
+            'formatter_with' => [
+                'format' => "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n",
+                'dateFormat' => 'Y-m-d H:i:s',
+            ],
+        ],
 
         'papertrail' => [
             'driver' => 'monolog',
@@ -89,7 +101,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],

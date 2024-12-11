@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log; // Importation de Log
 
 class ProgrammesController extends Controller
 {
@@ -161,6 +162,7 @@ class ProgrammesController extends Controller
                     $changements->branch_crm = substr($abonne->CODE_BRANCHEMENT, 0, 1); // Première lettre du branchement
                     $changements->save();
                 }
+
             } elseif (in_array($abonne->ETAT_ABONNE, [9, 3])) {
 
                 $reference = $abonne->REFERENCE;

@@ -109,6 +109,9 @@
                             </tbody>
                         </table>
                         <button type="submit" class="btn btn-primary mt-3">Générer et Télécharger les Fiches Sélectionnées</button>
+                        <a href="{{ route('download-table', $programme->idprogrammes) }}" class="btn btn-success">
+                            Télécharger les données sous forme de table
+                        </a>
                     </form>
                 </div>
             </div>

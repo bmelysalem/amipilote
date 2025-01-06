@@ -142,6 +142,46 @@ class ProgrammesDetController extends Controller
         }
     }
 
+    public function downloadTable($programmeId)
+    {
+        // Récupérer le programme et ses abonnés avec leurs détails
+        $programme = Programmes::findOrFail($programmeId);
+        $abonnes = ProgrammesDet::where('idprogrammes', $programmeId)
+            ->with('abonne')
+            ->get();
+
+        // Préparer l'en-tête du fichier CSV
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="liste_abonnes_programme_' . $programmeId . '.csv"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ];
+
+        // Créer le callback pour générer le CSV
+        $callback = function() use ($abonnes) {
+            $file = fopen('php://output', 'w');
+            
+            // En-têtes des colonnes
+            fputcsv($file, ['Référence', 'Adresse', 'Numéro Compteur']);
+
+            // Données des abonnés
+            foreach ($abonnes as $abonne) {
+                fputcsv($file, [
+                    $abonne->REFERENCE,
+                    $abonne->abonne->ADRESSE ?? 'N/A',
+                    $abonne->NUMCOMPTEUR ?? 'N/A'
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        // Retourner le fichier CSV en téléchargement
+        return response()->stream($callback, 200, $headers);
+    }
+
 
     public function generateFiches_old($programmeId)
     {

@@ -11,6 +11,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('programmes/{programme}/generate-fiches', [App\Http\Controllers\ProgrammesDetController::class, 'generateFiches'])->name('generate-fiches');
     Route::post('programmes/{programme}/valider', [App\Http\Controllers\ProgrammesController::class, 'valider'])->name('programmes.valider');
     Route::get('programmes/{programme}/download-fiches2', [App\Http\Controllers\ProgrammesDetController::class, 'downloadFiches'])->name('download-fiches2');
+    Route::get('programmes/{programme}/download-table', [App\Http\Controllers\ProgrammesDetController::class, 'downloadTable'])->name('download-table');
     Route::resource('programmes', App\Http\Controllers\ProgrammesController::class);
     Route::get('/search-abonnees', [App\Http\Controllers\AbonnesController::class, 'search'])->name('search.abonnees');
     Route::post('/programmes/{programme}/add-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addProgrammeDet'])->name('add.programmedet');

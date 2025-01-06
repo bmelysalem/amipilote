@@ -158,31 +158,73 @@ class ProgrammesDetController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // Définir les en-têtes
-        $sheet->setCellValue('A1', 'N° FICHE');
-        $sheet->setCellValue('B1', 'REFERENCE');
-        $sheet->setCellValue('C1', 'ADRESSE');
-        $sheet->setCellValue('D1', 'COMPTEUR');
+        // Ajouter et formater le titre
+        $sheet->mergeCells('A1:D1');
+        $sheet->setCellValue('A1', 'LISTE DES ABONNÉS DU PROGRAMME ' . $programme->LIBELLE);
+        $sheet->getStyle('A1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'size' => 14
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ]);
+        $sheet->getRowDimension(1)->setRowHeight(30);
+
+        // Définir les en-têtes (maintenant en ligne 3)
+        $sheet->setCellValue('A3', 'N° FICHE');
+        $sheet->setCellValue('B3', 'REFERENCE');
+        $sheet->setCellValue('C3', 'ADRESSE');
+        $sheet->setCellValue('D3', 'COMPTEUR');
 
         // Style pour l'en-tête
-        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
-        
+        $sheet->getStyle('A3:D3')->applyFromArray([
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => 'E2E2E2',
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ]);
+
         // Remplir les données
-        $row = 2;
+        $row = 4;
         foreach ($abonnes as $abonne) {
             $sheet->setCellValue('A' . $row, $abonne->idprogemesdet);
-            
-            // Forcer le format texte pour la référence
             $sheet->setCellValueExplicit(
                 'B' . $row, 
                 $abonne->REFERENCE,
                 \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
             );
-            
             $sheet->setCellValue('C' . $row, $abonne->abonne->ADRESSE ?? 'N/A');
             $sheet->setCellValue('D' . $row, $abonne->compteur_ancien ?? 'N/A');
             $row++;
         }
+
+        // Définir les bordures pour toutes les cellules
+        $lastRow = $row - 1;
+        $sheet->getStyle('A3:D'.$lastRow)->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ]);
 
         // Définir toute la colonne B (REFERENCE) en format texte
         $sheet->getStyle('B:B')->getNumberFormat()
@@ -191,6 +233,11 @@ class ProgrammesDetController extends Controller
         // Ajuster automatiquement la largeur des colonnes
         foreach (range('A', 'D') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Définir une hauteur minimale pour toutes les lignes
+        for ($i = 3; $i <= $lastRow; $i++) {
+            $sheet->getRowDimension($i)->setRowHeight(20);
         }
 
         // Créer le fichier Excel

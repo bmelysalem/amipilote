@@ -204,6 +204,18 @@ class ProgrammesDetController extends Controller
         // Remplir les données
         $row = 4;
         foreach ($abonnes as $abonne) {
+            // Alterner les couleurs des lignes
+            if (($row % 2) == 0) {
+                $sheet->getStyle('A'.$row.':G'.$row)->applyFromArray([
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'startColor' => [
+                            'rgb' => 'F9F9F9',  // Gris très clair pour les lignes paires
+                        ],
+                    ],
+                ]);
+            }
+
             $sheet->setCellValue('A' . $row, $abonne->idprogemesdet);
             $sheet->setCellValueExplicit(
                 'B' . $row, 
@@ -248,6 +260,25 @@ class ProgrammesDetController extends Controller
         for ($i = 3; $i <= $lastRow; $i++) {
             $sheet->getRowDimension($i)->setRowHeight(20);
         }
+
+        // Configurer la mise en page
+        $sheet->getPageSetup()
+            ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE)
+            ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4)
+            ->setFitToWidth(1)
+            ->setFitToHeight(0);
+
+        // Configurer l'en-tête et le pied de page
+        $sheet->getHeaderFooter()
+            ->setOddHeader('&L&BProgramme: ' . $programme->LIBELLE . 
+                          '&C&BID: ' . $programme->idprogrammes . 
+                          '&R&BPage &P/&N')
+            ->setOddFooter('&L&BImprimé le: &D à &T' .
+                          '&C&BProgrammeID: ' . $programmeId .
+                          '&R&BPage &P sur &N');
+
+        // Répéter les lignes d'en-tête sur chaque page
+        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(3, 3);
 
         // Créer le fichier Excel
         $writer = new Xlsx($spreadsheet);

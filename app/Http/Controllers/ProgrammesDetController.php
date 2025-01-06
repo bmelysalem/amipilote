@@ -164,14 +164,15 @@ class ProgrammesDetController extends Controller
             $file = fopen('php://output', 'w');
             
             // En-têtes des colonnes
-            fputcsv($file, ['Référence', 'Adresse', 'Numéro Compteur']);
+            fputcsv($file, ['N FICHE','REFERENCE', 'ADRESSE', 'COMPTEUR']);
 
             // Données des abonnés
             foreach ($abonnes as $abonne) {
                 fputcsv($file, [
+                    $abonne->idprogemesdet,
                     $abonne->REFERENCE,
                     $abonne->abonne->ADRESSE ?? 'N/A',
-                    $abonne->NUMCOMPTEUR ?? 'N/A'
+                    $abonne->COMPTEUR ?? 'N/A'
                 ]);
             }
 

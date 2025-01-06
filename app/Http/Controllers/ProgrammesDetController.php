@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Log; // Importation de Log
 use PDF;
 // Import de la façade DOMPDF
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// Si vous utilisez Laravel-Excel, ajoutez aussi :
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgrammesDetController extends Controller
 {
@@ -150,37 +154,45 @@ class ProgrammesDetController extends Controller
             ->with('abonne')
             ->get();
 
-        // Préparer l'en-tête du fichier CSV
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="liste_abonnes_programme_' . $programmeId . '.csv"',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0'
-        ];
+        // Créer un nouveau spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-        // Créer le callback pour générer le CSV
-        $callback = function() use ($abonnes) {
-            $file = fopen('php://output', 'w');
-            
-            // En-têtes des colonnes
-            fputcsv($file, ['N FICHE','REFERENCE', 'ADRESSE', 'COMPTEUR']);
+        // Définir les en-têtes
+        $sheet->setCellValue('A1', 'N° FICHE');
+        $sheet->setCellValue('B1', 'REFERENCE');
+        $sheet->setCellValue('C1', 'ADRESSE');
+        $sheet->setCellValue('D1', 'COMPTEUR');
 
-            // Données des abonnés
-            foreach ($abonnes as $abonne) {
-                fputcsv($file, [
-                    $abonne->idprogemesdet,
-                    $abonne->REFERENCE,
-                    $abonne->abonne->ADRESSE ?? 'N/A',
-                    $abonne->abonne->COMPTEUR ?? 'N/A'
-                ]);
-            }
+        // Style pour l'en-tête
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+        
+        // Remplir les données
+        $row = 2;
+        foreach ($abonnes as $abonne) {
+            $sheet->setCellValue('A' . $row, $abonne->idprogemesdet);
+            $sheet->setCellValue('B' . $row, $abonne->REFERENCE);
+            $sheet->setCellValue('C' . $row, $abonne->abonne->ADRESSE ?? 'N/A');
+            $sheet->setCellValue('D' . $row, $abonne->compteur_ancien ?? 'N/A');
+            $row++;
+        }
 
-            fclose($file);
-        };
+        // Ajuster automatiquement la largeur des colonnes
+        foreach (range('A', 'D') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
 
-        // Retourner le fichier CSV en téléchargement
-        return response()->stream($callback, 200, $headers);
+        // Créer le fichier Excel
+        $writer = new Xlsx($spreadsheet);
+        
+        // Définir les headers pour le téléchargement
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="liste_abonnes_programme_' . $programmeId . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        // Envoyer le fichier au navigateur
+        $writer->save('php://output');
+        exit;
     }
 
 

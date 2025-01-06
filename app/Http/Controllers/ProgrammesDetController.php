@@ -159,7 +159,7 @@ class ProgrammesDetController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         // Ajouter et formater le titre
-        $sheet->mergeCells('A1:E1');
+        $sheet->mergeCells('A1:F1');
         $sheet->setCellValue('A1', 'LISTE DES ABONNÉS DU PROGRAMME ' . $programmeId);
         $sheet->getStyle('A1')->applyFromArray([
             'font' => [
@@ -178,10 +178,11 @@ class ProgrammesDetController extends Controller
         $sheet->setCellValue('B3', 'REFERENCE');
         $sheet->setCellValue('C3', 'ADRESSE');
         $sheet->setCellValue('D3', 'COMPTEUR');
-        $sheet->setCellValue('E3', 'ÉTAT');
+        $sheet->setCellValue('E3', 'SOLDE');
+        $sheet->setCellValue('F3', 'ÉTAT');
 
         // Style pour l'en-tête
-        $sheet->getStyle('A3:E3')->applyFromArray([
+        $sheet->getStyle('A3:F3')->applyFromArray([
             'font' => [
                 'bold' => true,
             ],
@@ -207,13 +208,14 @@ class ProgrammesDetController extends Controller
             );
             $sheet->setCellValue('C' . $row, $abonne->abonne->ADRESSE ?? 'N/A');
             $sheet->setCellValue('D' . $row, $abonne->compteur_ancien ?? 'N/A');
-            $sheet->setCellValue('E' . $row, $abonne->abonne->ETAT_ABONNE ?? 'N/A');
+            $sheet->setCellValue('E' . $row, $abonne->SOLD ?? 'N/A');
+            $sheet->setCellValue('F' . $row, $abonne->abonne->ETAT_ABONNE ?? 'N/A');
             $row++;
         }
 
         // Définir les bordures pour toutes les cellules
         $lastRow = $row - 1;
-        $sheet->getStyle('A3:E'.$lastRow)->applyFromArray([
+        $sheet->getStyle('A3:F'.$lastRow)->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -233,7 +235,7 @@ class ProgrammesDetController extends Controller
               ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
         // Ajuster automatiquement la largeur des colonnes
-        foreach (range('A', 'E') as $column) {
+        foreach (range('A', 'F') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
 

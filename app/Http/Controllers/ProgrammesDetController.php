@@ -172,7 +172,7 @@ class ProgrammesDetController extends Controller
                     $abonne->idprogemesdet,
                     $abonne->REFERENCE,
                     $abonne->abonne->ADRESSE ?? 'N/A',
-                    $abonne->COMPTEUR ?? 'N/A'
+                    $abonne->abonne->COMPTEUR ?? 'N/A'
                 ]);
             }
 

@@ -207,7 +207,7 @@ class ProgrammesDetController extends Controller
             );
             $sheet->setCellValue('C' . $row, $abonne->abonne->ADRESSE ?? 'N/A');
             $sheet->setCellValue('D' . $row, $abonne->compteur_ancien ?? 'N/A');
-            $sheet->setCellValue('E' . $row, $abonne->abonne->ETAT ?? 'N/A');
+            $sheet->setCellValue('E' . $row, $abonne->abonne->ETAT_ABONNE ?? 'N/A');
             $row++;
         }
 

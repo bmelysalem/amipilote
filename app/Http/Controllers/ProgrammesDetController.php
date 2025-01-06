@@ -171,11 +171,22 @@ class ProgrammesDetController extends Controller
         $row = 2;
         foreach ($abonnes as $abonne) {
             $sheet->setCellValue('A' . $row, $abonne->idprogemesdet);
-            $sheet->setCellValue('B' . $row, $abonne->REFERENCE);
+            
+            // Forcer le format texte pour la référence
+            $sheet->setCellValueExplicit(
+                'B' . $row, 
+                $abonne->REFERENCE,
+                \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+            );
+            
             $sheet->setCellValue('C' . $row, $abonne->abonne->ADRESSE ?? 'N/A');
             $sheet->setCellValue('D' . $row, $abonne->compteur_ancien ?? 'N/A');
             $row++;
         }
+
+        // Définir toute la colonne B (REFERENCE) en format texte
+        $sheet->getStyle('B:B')->getNumberFormat()
+              ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
         // Ajuster automatiquement la largeur des colonnes
         foreach (range('A', 'D') as $column) {

@@ -159,8 +159,8 @@ class ProgrammesDetController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         // Ajouter et formater le titre
-        $sheet->mergeCells('A1:F1');
-        $sheet->setCellValue('A1', 'LISTE DES ABONNÉS DU PROGRAMME ' . $programmeId);
+        $sheet->mergeCells('A1:G1');
+        $sheet->setCellValue('A1', 'LISTE DES ABONNÉS DU PROGRAMME ' . $programme->LIBELLE . ' (ID: ' . $programme->idprogrammes . ')');
         $sheet->getStyle('A1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -180,9 +180,10 @@ class ProgrammesDetController extends Controller
         $sheet->setCellValue('D3', 'COMPTEUR');
         $sheet->setCellValue('E3', 'SOLDE');
         $sheet->setCellValue('F3', 'ÉTAT');
+        $sheet->setCellValue('G3', 'TYPE');
 
         // Style pour l'en-tête
-        $sheet->getStyle('A3:F3')->applyFromArray([
+        $sheet->getStyle('A3:G3')->applyFromArray([
             'font' => [
                 'bold' => true,
             ],
@@ -208,14 +209,15 @@ class ProgrammesDetController extends Controller
             );
             $sheet->setCellValue('C' . $row, $abonne->abonne->ADRESSE ?? 'N/A');
             $sheet->setCellValue('D' . $row, $abonne->compteur_ancien ?? 'N/A');
-            $sheet->setCellValue('E' . $row, $abonne->SOLDE ?? 'N/A');
-            $sheet->setCellValue('F' . $row, $abonne->abonne->ETAT_ABONNE ?? 'N/A');
+            $sheet->setCellValue('E' . $row, $abonne->abonne->SOLDE ?? 'N/A');
+            $sheet->setCellValue('F' . $row, $abonne->abonne->ETAT ?? 'N/A');
+            $sheet->setCellValue('G' . $row, substr($abonne->abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T' : 'M');
             $row++;
         }
 
         // Définir les bordures pour toutes les cellules
         $lastRow = $row - 1;
-        $sheet->getStyle('A3:F'.$lastRow)->applyFromArray([
+        $sheet->getStyle('A3:G'.$lastRow)->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -235,7 +237,7 @@ class ProgrammesDetController extends Controller
               ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
         // Ajuster automatiquement la largeur des colonnes
-        foreach (range('A', 'F') as $column) {
+        foreach (range('A', 'G') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
 

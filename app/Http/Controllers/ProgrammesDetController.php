@@ -198,6 +198,9 @@ class ProgrammesDetController extends Controller
             ],
         ]);
 
+        // Ajouter le filtre sur les en-têtes
+        $sheet->setAutoFilter('A3:G3');
+
         // Remplir les données
         $row = 4;
         foreach ($abonnes as $abonne) {

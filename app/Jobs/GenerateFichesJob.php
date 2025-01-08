@@ -37,7 +37,7 @@ class GenerateFichesJob implements ShouldQueue
      */
     public function handle()
     {
-        //ini_set('memory_limit', '512M');
+        ini_set('memory_limit', '1024M');
 
         try {
             Log::info("HANDLING GenerateFichesJob FOR programmeId: {$this->programmeId}");

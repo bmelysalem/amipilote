@@ -17,8 +17,8 @@ class GenerateFichesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    // Temps limite pour l'exécution du job (6 minutes)
-    public $timeout = 360;
+    // Temps limite pour l'exécution du job (10 minutes)
+    public $timeout = 600;
 
     protected $programmeId;
 
@@ -35,7 +35,7 @@ class GenerateFichesJob implements ShouldQueue
     /**
      * Exécute le job.
      */
-    public function handle()
+    public function oldhandle()
     {
         ini_set('memory_limit', '1024M');
 
@@ -80,6 +80,71 @@ class GenerateFichesJob implements ShouldQueue
             Log::error("Erreur lors de la génération des fiches pour le programme {$this->programmeId}: " . $e->getMessage());
 
             // Réinitialiser l'état de la génération en cas d'erreur
+            if (isset($programme)) {
+                $programme->generation_in_progress = false;
+                $programme->save();
+            }
+        }
+    }
+    public function handle()
+    {
+        ini_set('memory_limit', '1024M'); // Set memory limit to avoid memory exhaustion.
+
+        try {
+            Log::info("HANDLING GenerateFichesJob FOR programmeId: {$this->programmeId}");
+
+            // Retrieve the programme
+            $programme = Programmes::findOrFail($this->programmeId);
+
+            // Path for the generated PDF
+            $pdfPath = storage_path("fiches/fiches_poses_{$this->programmeId}.pdf");
+
+            // Delete existing file if it exists
+            if (file_exists($pdfPath)) {
+                unlink($pdfPath);
+                Log::info("Existing file deleted: {$pdfPath}");
+            }
+
+            // Get a query builder instance for `abonnes` to enable chunking
+            $abonnesQuery = ProgrammesDet::where('idprogrammes', $this->programmeId)->with('abonne');
+
+            // Check if there are any `abonnes`
+            if (!$abonnesQuery->exists()) {
+                Log::warning("No abonnés found for programme {$this->programmeId}. Canceling generation.");
+                $programme->generation_in_progress = false;
+                $programme->save();
+                return;
+            }
+
+            // Generate the PDF in chunks
+            $pdf = PDF::loadHTML(''); // Initialize an empty PDF object
+            $htmlContent = []; // Store the combined HTML content for the PDF
+
+            // Process abonnes in chunks
+            $abonnesQuery->chunk(100, function ($chunk) use (&$htmlContent) {
+                // Render view for each chunk and append it to the HTML content
+                $htmlContent[] = view('fichier-pose.pose_multiple', ['abonnes' => $chunk])->render();
+            });
+
+            // Combine all HTML content into a single string
+            $finalHtml = implode('', $htmlContent);
+
+            // Load the combined HTML into the PDF
+            $pdf = PDF::loadHTML($finalHtml);
+
+            // Save the consolidated PDF
+            $pdf->save($pdfPath);
+
+            // Mark the programme as having its fiches generated
+            $programme->fiches_generees = true;
+            $programme->generation_in_progress = false;
+            $programme->save();
+
+            Log::info("Fiches for programme {$this->programmeId} generated successfully. File: {$pdfPath}");
+        } catch (\Exception $e) {
+            Log::error("Error during fiche generation for programme {$this->programmeId}: " . $e->getMessage());
+
+            // Reset the generation state in case of an error
             if (isset($programme)) {
                 $programme->generation_in_progress = false;
                 $programme->save();

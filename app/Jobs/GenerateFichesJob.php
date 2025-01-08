@@ -19,7 +19,7 @@ class GenerateFichesJob implements ShouldQueue
 
     // Temps limite pour l'exécution du job (10 minutes)
     public $timeout = 600;
-
+    public $tries = 50;
     protected $programmeId;
 
     /**

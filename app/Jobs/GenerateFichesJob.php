@@ -88,7 +88,7 @@ class GenerateFichesJob implements ShouldQueue
     }
     public function handle()
     {
-        ini_set('memory_limit', '1024M'); // Set memory limit to avoid memory exhaustion.
+        ini_set('memory_limit', '2048M'); // Set memory limit to avoid memory exhaustion.
 
         try {
             Log::info("HANDLING GenerateFichesJob FOR programmeId: {$this->programmeId}");

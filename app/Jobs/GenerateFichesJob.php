@@ -121,7 +121,7 @@ class GenerateFichesJob implements ShouldQueue
             $htmlContent = []; // Store the combined HTML content for the PDF
 
             // Process abonnes in chunks
-            $abonnesQuery->chunk(100, function ($chunk) use (&$htmlContent) {
+            $abonnesQuery->chunk(50, function ($chunk) use (&$htmlContent) {
                 // Render view for each chunk and append it to the HTML content
                 $htmlContent[] = view('fichier-pose.pose_multiple', ['abonnes' => $chunk])->render();
             });

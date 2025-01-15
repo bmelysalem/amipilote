@@ -72,7 +72,7 @@
                     <div class="mb-4">
                         <form id="searchForm" action="{{ route('programmes.show', $programme->idprogrammes) }}" method="GET" class="flex flex-wrap gap-4 items-end p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-50">
                             <div class="form-group">
-                                <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">Référence</label>
+                                <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">Référence, Secteur ...</label>
                                 <input type="text" id="reference" name="reference" class="form-control border-gray-300" placeholder="Rechercher une référence" value="{{ request('reference') }}">
                             </div>
                             

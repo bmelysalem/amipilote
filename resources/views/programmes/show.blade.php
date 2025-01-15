@@ -70,37 +70,39 @@
                     
                     <!-- Formulaire de recherche et filtres -->
                     <div class="mb-4">
-                        <form id="searchForm" class="flex flex-wrap gap-4 items-end">
+                        <form id="searchForm" action="{{ route('programmes.show', $programme->idprogrammes) }}" method="GET" class="flex flex-wrap gap-4 items-end p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-50">
                             <div class="form-group">
-                                <label for="reference">Référence</label>
-                                <input type="text" id="reference" class="form-control" placeholder="Rechercher une référence">
+                                <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">Référence</label>
+                                <input type="text" id="reference" name="reference" class="form-control border-gray-300" placeholder="Rechercher une référence" value="{{ request('reference') }}">
                             </div>
                             
                             <div class="form-group">
-                                <label for="type">Type</label>
-                                <select id="type" class="form-control">
+                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                                <select id="type" name="type" class="form-control border-gray-300">
                                     <option value="">Tous</option>
-                                    <option value="1">Monophasé (M)</option>
-                                    <option value="4">Triphasé (T)</option>
+                                    <option value="1" {{ request('type') == '1' ? 'selected' : '' }}>Monophasé (M)</option>
+                                    <option value="4" {{ request('type') == '4' ? 'selected' : '' }}>Triphasé (T)</option>
                                 </select>
                             </div>
                             
                             <div class="form-group">
-                                <label for="etat">État</label>
-                                <select id="etat" class="form-control">
+                                <label for="etat" class="block text-sm font-medium text-gray-700 mb-1">État</label>
+                                <select id="etat" name="etat" class="form-control border-gray-300">
                                     <option value="">Tous</option>
                                     @for($i = 1; $i <= 9; $i++)
-                                        <option value="{{ $i }}">État {{ $i }}</option>
+                                        <option value="{{ $i }}" {{ request('etat') == $i ? 'selected' : '' }}>État {{ $i }}</option>
                                     @endfor
                                 </select>
                             </div>
                             
-                            <button type="button" class="btn btn-primary" onclick="filterTable()">
-                                Filtrer
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="resetFilters()">
-                                Réinitialiser
-                            </button>
+                            <div class="flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Filtrer
+                                </button>
+                                <a href="{{ route('programmes.show', $programme->idprogrammes) }}" class="btn btn-secondary">
+                                    Réinitialiser
+                                </a>
+                            </div>
                         </form>
                     </div>
 

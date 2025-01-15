@@ -483,12 +483,12 @@ class ProgrammesController extends Controller
         // }
 
         // // Filtre par état
-        // if ($request->has('etat') && $request->etat !== '') {
-        //     $etat = $request->get('etat');
-        //     $details = $details->whereHas('abonne', function($query) use ($etat) {
-        //         $query->where('ETAT_ABONNE', $etat);
-        //     });
-        // }
+        if ($request->has('etat') && $request->etat !== '') {
+            $etat = $request->get('etat');
+            $details = $details->whereHas('abonne', function($query) use ($etat) {
+                $query->where('ETAT_ABONNE', $etat);
+            });
+        }
 
         $details = $details->get();
 

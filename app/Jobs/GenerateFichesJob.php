@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use setasign\Fpdi\Fpdi;
 
 class GenerateFichesJob implements ShouldQueue
 {
@@ -130,14 +131,21 @@ class GenerateFichesJob implements ShouldQueue
                 $chunkCounter++;
             });
 
-            // Merge all PDFs using PDFMerger
-            $merger = new \PDFMerger\PDFMerger();
+            // Merge PDFs using FPDI
+            $pdf = new Fpdi();
+            
             foreach ($tempPdfs as $tempPdf) {
-                $merger->addPDF($tempPdf, 'all');
+                $pageCount = $pdf->setSourceFile($tempPdf);
+                for ($i = 1; $i <= $pageCount; $i++) {
+                    $template = $pdf->importPage($i);
+                    $size = $pdf->getTemplateSize($template);
+                    $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                    $pdf->useTemplate($template);
+                }
             }
 
             // Save the merged PDF
-            $merger->merge('file', storage_path("fiches/fiches_poses_{$this->programmeId}.pdf"));
+            $pdf->Output('F', storage_path("fiches/fiches_poses_{$this->programmeId}.pdf"));
 
             // Clean up temporary files
             foreach ($tempPdfs as $tempPdf) {

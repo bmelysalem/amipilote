@@ -470,7 +470,7 @@ class ProgrammesController extends Controller
         
         // Filtre par référence
         if ($request->has('reference')) {
-            $search = $request->get('reference');
+            $reference = $request->get('reference');
             $details = $details->where('REFERENCE', 'LIKE', "{$reference}%");
         }
 
@@ -496,7 +496,7 @@ class ProgrammesController extends Controller
         return view('programmes.show', [
             'programme' => $programme,
             'details' => $details,
-            'search' => $request->get('search'),
+            'reference' => $request->get('reference'),
             'type' => $request->get('type'),
             'etat' => $request->get('etat')
         ]);

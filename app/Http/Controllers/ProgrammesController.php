@@ -475,20 +475,20 @@ class ProgrammesController extends Controller
         }
 
         // Filtre par type de compteur
-        if ($request->has('type') && $request->type !== '') {
-            $type = $request->get('type');
-            $details = $details->whereHas('abonne', function($query) use ($type) {
-                $query->where('TYPE_COMPTEUR', 'LIKE',"{$type}%");
-            });
-        }
+        // if ($request->has('type') && $request->type !== '') {
+        //     $type = $request->get('type');
+        //     $details = $details->whereHas('abonne', function($query) use ($type) {
+        //         $query->where('TYPE_COMPTEUR', 'LIKE',"{$type}%");
+        //     });
+        // }
 
-        // Filtre par état
-        if ($request->has('etat') && $request->etat !== '') {
-            $etat = $request->get('etat');
-            $details = $details->whereHas('abonne', function($query) use ($etat) {
-                $query->where('ETAT_ABONNE', $etat);
-            });
-        }
+        // // Filtre par état
+        // if ($request->has('etat') && $request->etat !== '') {
+        //     $etat = $request->get('etat');
+        //     $details = $details->whereHas('abonne', function($query) use ($etat) {
+        //         $query->where('ETAT_ABONNE', $etat);
+        //     });
+        // }
 
         $details = $details->get();
 

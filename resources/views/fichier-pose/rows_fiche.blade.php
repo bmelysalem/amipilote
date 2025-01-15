@@ -4,14 +4,12 @@
         <td class="left">
             <p class="center bold">SOMELEC / CSMTN <br> Projet CI</p>
         </td>
-        <td class="right">
-            <p>Date : {{ now()->format('d/m/Y') }}</p>
-        </td>
-    </tr>
-    <tr>
         <td colspan="2" class="center">
             <h1>Fiche de pose Compteur Intelligent</h1>
             <h2>{{$fiche->abonne->ETAT_ABONNE == 9 ? 'Création 10E':($fiche->abonne->ETAT_ABONNE == 3 ?'Succession 20E':'Changement')}}</h2>
+        </td>
+        <td class="right">
+            <p>Date : {{ now()->format('d/m/Y') }}</p>
         </td>
     </tr>
 

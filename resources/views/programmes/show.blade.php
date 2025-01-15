@@ -121,7 +121,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($programme->details as $detail)
+                                @foreach ($details as $detail)
                                     <tr>
                                         <td>
                                             <input type="checkbox" name="abonne_ids[]" value="{{ $detail->idprogemesdet }}">

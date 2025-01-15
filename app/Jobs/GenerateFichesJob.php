@@ -92,7 +92,8 @@ class GenerateFichesJob implements ShouldQueue
         ini_set('memory_limit', '2048M');
 
         try {
-            Log::info("HANDLING GenerateFichesJob FOR programmeId: {$this->programmeId}");
+            Log::info("HANDLING GenerateFichesJob FOR programmeId: {$this->programmeId} VERSION TABLE");
+            
 
             // Retrieve the programme
             $programme = Programmes::findOrFail($this->programmeId);

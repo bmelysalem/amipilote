@@ -88,7 +88,7 @@ class GenerateFichesJob implements ShouldQueue
     }
     public function handle()
     {
-        ini_set('memory_limit', '2048M'); // Set memory limit to avoid memory exhaustion.
+        ini_set('memory_limit', '2048M');
 
         try {
             Log::info("HANDLING GenerateFichesJob FOR programmeId: {$this->programmeId}");
@@ -105,10 +105,9 @@ class GenerateFichesJob implements ShouldQueue
                 Log::info("Existing file deleted: {$pdfPath}");
             }
 
-            // Get a query builder instance for `abonnes` to enable chunking
+            // Get a query builder instance for `abonnes`
             $abonnesQuery = ProgrammesDet::where('idprogrammes', $this->programmeId)->with('abonne');
 
-            // Check if there are any `abonnes`
             if (!$abonnesQuery->exists()) {
                 Log::warning("No abonnés found for programme {$this->programmeId}. Canceling generation.");
                 $programme->generation_in_progress = false;
@@ -116,35 +115,56 @@ class GenerateFichesJob implements ShouldQueue
                 return;
             }
 
-            // Generate the PDF in chunks
-            $pdf = PDF::loadHTML(''); // Initialize an empty PDF object
-            $htmlContent = []; // Store the combined HTML content for the PDF
+            $tempPdfs = []; // Store temporary PDF paths
+            $chunkCounter = 1;
 
-            // Process abonnes in chunks
-            $abonnesQuery->chunk(50, function ($chunk) use (&$htmlContent) {
-                // Render view for each chunk and append it to the HTML content
-                $htmlContent[] = view('fichier-pose.pose_multiple', ['abonnes' => $chunk])->render();
+            // Process abonnes in chunks and generate individual PDFs
+            $abonnesQuery->chunk(50, function ($chunk) use (&$tempPdfs, &$chunkCounter) {
+                $tempPath = storage_path("fiches/temp_chunk_{$this->programmeId}_{$chunkCounter}.pdf");
+                
+                // Generate PDF for this chunk
+                $pdf = PDF::loadView('fichier-pose.pose_multiple', ['abonnes' => $chunk]);
+                $pdf->save($tempPath);
+                
+                $tempPdfs[] = $tempPath;
+                $chunkCounter++;
             });
 
-            // Combine all HTML content into a single string
-            $finalHtml = implode('', $htmlContent);
+            // Merge all PDFs using PDFMerger
+            $merger = new \PDFMerger\PDFMerger();
+            foreach ($tempPdfs as $tempPdf) {
+                $merger->addPDF($tempPdf, 'all');
+            }
 
-            // Load the combined HTML into the PDF
-            $pdf = PDF::loadHTML($finalHtml);
+            // Save the merged PDF
+            $merger->merge('file', storage_path("fiches/fiches_poses_{$this->programmeId}.pdf"));
 
-            // Save the consolidated PDF
-            $pdf->save($pdfPath);
+            // Clean up temporary files
+            foreach ($tempPdfs as $tempPdf) {
+                if (file_exists($tempPdf)) {
+                    unlink($tempPdf);
+                }
+            }
 
-            // Mark the programme as having its fiches generated
+            // Mark the programme as completed
             $programme->fiches_generees = true;
             $programme->generation_in_progress = false;
             $programme->save();
 
-            Log::info("Fiches for programme {$this->programmeId} generated successfully. File: {$pdfPath}");
+            Log::info("Fiches for programme {$this->programmeId} generated and merged successfully.");
         } catch (\Exception $e) {
             Log::error("Error during fiche generation for programme {$this->programmeId}: " . $e->getMessage());
+            
+            // Clean up any temporary files in case of error
+            if (isset($tempPdfs)) {
+                foreach ($tempPdfs as $tempPdf) {
+                    if (file_exists($tempPdf)) {
+                        unlink($tempPdf);
+                    }
+                }
+            }
 
-            // Reset the generation state in case of an error
+            // Reset the generation state
             if (isset($programme)) {
                 $programme->generation_in_progress = false;
                 $programme->save();

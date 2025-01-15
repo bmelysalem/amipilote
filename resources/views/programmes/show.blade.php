@@ -67,6 +67,43 @@
 
                     <!-- Table des abonnés avec cases à cocher -->
                     <h4>Détails des Compteurs</h4>
+                    
+                    <!-- Formulaire de recherche et filtres -->
+                    <div class="mb-4">
+                        <form id="searchForm" class="flex flex-wrap gap-4 items-end">
+                            <div class="form-group">
+                                <label for="reference">Référence</label>
+                                <input type="text" id="reference" class="form-control" placeholder="Rechercher une référence">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <select id="type" class="form-control">
+                                    <option value="">Tous</option>
+                                    <option value="1">Monophasé (M)</option>
+                                    <option value="4">Triphasé (T)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="etat">État</label>
+                                <select id="etat" class="form-control">
+                                    <option value="">Tous</option>
+                                    @for($i = 1; $i <= 9; $i++)
+                                        <option value="{{ $i }}">État {{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary" onclick="filterTable()">
+                                Filtrer
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="resetFilters()">
+                                Réinitialiser
+                            </button>
+                        </form>
+                    </div>
+
                     <form action="{{ route('generateFichesByList') }}" method="POST">
                         @csrf
                         <input type="hidden" name="programme_id" value="{{ $programme->idprogrammes }}">

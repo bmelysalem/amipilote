@@ -460,13 +460,46 @@ class ProgrammesController extends Controller
     }
 
     // Afficher les détails d'un programme
-    public function show($id)
+    public function show(Request $request, $id)
     {
         // Trouver le programme par idprogrammes ou échouer
-        $programme = Programmes::with('details')->findOrFail($id);
+        $programme = Programmes::findOrFail($id);
+        
+        // Récupérer les détails avec filtres
+        $details = $programme->details()->with('abonne');
+        
+        // Filtre par référence
+        if ($request->has('reference')) {
+            $search = $request->get('reference');
+            $details = $details->where('REFERENCE', 'LIKE', "{$reference}%");
+        }
 
-        // Retourner la vue avec les détails du programme
-        return view('programmes.show', compact('programme'));
+        // Filtre par type de compteur
+        if ($request->has('type') && $request->type !== '') {
+            $type = $request->get('type');
+            $details = $details->whereHas('abonne', function($query) use ($type) {
+                $query->where('TYPE_COMPTEUR', 'LIKE',"{$type}%");
+            });
+        }
+
+        // Filtre par état
+        if ($request->has('etat') && $request->etat !== '') {
+            $etat = $request->get('etat');
+            $details = $details->whereHas('abonne', function($query) use ($etat) {
+                $query->where('ETAT_ABONNE', $etat);
+            });
+        }
+
+        $details = $details->get();
+
+        // Retourner la vue avec tous les paramètres
+        return view('programmes.show', [
+            'programme' => $programme,
+            'details' => $details,
+            'search' => $request->get('search'),
+            'type' => $request->get('type'),
+            'etat' => $request->get('etat')
+        ]);
     }
 
     // Supprime un programme

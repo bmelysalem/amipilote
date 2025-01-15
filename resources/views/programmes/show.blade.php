@@ -75,8 +75,9 @@
                                 <tr>
                                     <th><input type="checkbox" id="selectAll"></th>
                                     <th>Référence</th>
-                                    <th>Compteur Posé</th>
-                                    <th>Branch Repris</th>
+                                    <th>TARIF</th>
+                                    <th>TYPE</th>
+                                    <th>ETAT</th>
                                     <th>Compteur Ancien</th>
                                     <th>Téléphone</th>
                                     <th>Actions</th>
@@ -89,8 +90,9 @@
                                             <input type="checkbox" name="abonne_ids[]" value="{{ $detail->idprogemesdet }}">
                                         </td>
                                         <td>{{ $detail->REFERENCE }}</td>
-                                        <td>{{ $detail->compteur_pose ? 'Oui' : 'Non' }}</td>
-                                        <td>{{ $detail->Branch_repris ? 'Oui' : 'Non' }}</td>
+                                        <td>{{ $detail->abonne->tarif }}</td>
+                                        <td>{{ substr($detail->abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T' : 'M' }}</td>
+                                        <td>{{ $detail->abonne->ETAT_ABONNE }}</td>
                                         <td>{{ $detail->compteur_ancien }}</td>
                                         <td>{{ $detail->telephone_03 }}</td>
                                         <td>

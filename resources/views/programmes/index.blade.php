@@ -17,8 +17,8 @@
                             <tr>
                                 <th>N°</th>
                                 <th>Code Agence</th>
-                                <th>Date Saisie</th>
-                                <th>Date Début</th>
+                                <th>TARIF</th>
+                                <th></th>
                                 <th>Date Fin</th>
                                 <th>Nombre de Compteurs</th>
                                 <th>Actions</th>

@@ -24,12 +24,7 @@
             margin-bottom: 20px;
         }
 
-        th,
-        td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
+        
 
         h1,
         h2,
@@ -111,6 +106,29 @@
         .m20 {
             margin-bottom:20px
         }
+        table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table td {
+    border: none;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+}
+
+.field.bordered,
+.emptyfield.bordered,
+.emptyfield2.bordered {
+    border: 1px solid #000;
+    padding: 3px;
+    margin: 2px 0;
+}
+
+.center { text-align: center; }
+.right { text-align: right; }
+.bold { font-weight: bold; }
     </style>
 </head>
 <body>

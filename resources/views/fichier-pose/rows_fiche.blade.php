@@ -1,174 +1,196 @@
-<!-- Entête avec la date à gauche et SOMELEC / CSMTN à droite -->
-<div class="row bordered">
+<!-- Header section -->
+<table class="full-width bordered">
+    <tr>
+        <td class="left">
+            <p class="center bold">SOMELEC / CSMTN <br> Projet CI</p>
+        </td>
+        <td class="right">
+            <p>Date : {{ now()->format('d/m/Y') }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="center">
+            <h1>Fiche de pose Compteur Intelligent</h1>
+            <h2>{{$fiche->abonne->ETAT_ABONNE == 9 ? 'Création 10E':($fiche->abonne->ETAT_ABONNE == 3 ?'Succession 20E':'Changement')}}</h2>
+        </td>
+    </tr>
+</table>
 
-    <div class="left">
-        <p class="center bold">SOMELEC / CSMTN <br> Projet CI</p>
-    </div>
-    <div class="right">
-        <p>Date : {{ now()->format('d/m/Y') }}</p>
-    </div>
-    <div class="cnter">
-        <h1 class="center">Fiche de pose Compteur Intelligent</h1>
-        <h2>{{$fiche->abonne->ETAT_ABONNE == 9 ? 'Création 10E':($fiche->abonne->ETAT_ABONNE == 3 ?'Succession 20E':'Changement')}}</h2>
-    </div>
-    <div class="clear"></div>
-</div>
-
-<div class="row">
-    <div class="left">
-        <div class="left "><label>Programme ID</label>
+<!-- Program and ID information -->
+<table class="full-width mt10">
+    <tr>
+        <td>
+            <label>Programme ID</label>
             <div class="field bordered">{{ $fiche->idprogrammes }}</div>
-        </div>
-    </div>
-    <div class="left ml20">
-        <div class="left "><label>ID Fiche</label>
+        </td>
+        <td>
+            <label>ID Fiche</label>
             <div class="field bordered">{{ $fiche->idprogemesdet }}</div>
-        </div>
-    </div>
-    <div class="right">
-        <div class="left "><label>Date de pose</label>
+        </td>
+        <td class="right">
+            <label>Date de pose</label>
             <div class="field bordered">{{ '..../..../.......' }}</div>
-        </div>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="row">
-    <div class="left">
-        <div class="left "><label>Reference</label>
-            <div class="field bordered">{{ $abonne->ETAT_ABONNE == 3 ?$abonne->successeur : $fiche->REFERENCE }}</div>
-        </div>
-    </div>
-    <div class="right">
-        <div class="left "><label>ADRESSE FAB</label>
+        </td>
+    </tr>
+</table>
+
+<!-- Reference and Address information -->
+<table class="full-width mt10">
+    <tr>
+        <td>
+            <label>Reference</label>
+            <div class="field bordered">{{ $abonne->ETAT_ABONNE == 3 ? $abonne->successeur : $fiche->REFERENCE }}</div>
+        </td>
+        <td>
+            <label>ADRESSE FAB</label>
             <div class="field bordered">{{ $abonne->ADRESSE }}</div>
-        </div>
-    </div>
-    <div class="right mr20">
-        <div class="left "><label>GROUPE</label>
+        </td>
+        <td>
+            <label>GROUPE</label>
             <div class="field bordered">{{ $abonne->GROUPE }}</div>
-        </div>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="row">
-    <div class="left">
-        <div class="left "><label>NOM</label>
+        </td>
+    </tr>
+</table>
+
+<!-- Name and Site Address -->
+<table class="full-width mt10">
+    <tr>
+        <td width="50%">
+            <label>NOM</label>
             <div class="field bordered">{{ $abonne->NOM }}</div>
-        </div>
-    </div>
-    <div class="right">
-        <div class="left "><label>ADRESSE SITE</label>
+        </td>
+        <td width="50%">
+            <label>ADRESSE SITE</label>
             <div class="emptyfield2 bordered">{{ ' ' }}</div>
-        </div>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="row">
-    <div class="left">
-        <div class="left "><label>TELEPHONES</label>
+        </td>
+    </tr>
+</table>
+
+<!-- Phone and Consumption -->
+<table class="full-width mt10">
+    <tr>
+        <td>
+            <label>TELEPHONES</label>
             <div class="field bordered">{{ $abonne->TELEPHONE_01 }}</div>
-        </div>
-    </div>
-    <div class="right">
-        <div class="left "><label>NB Estimations</label>
+        </td>
+        <td>
+            <label>NB Estimations</label>
             <div class="field bordered">{{ $abonne->NOMBRE_ESTIMATION }}</div>
-        </div>
-    </div>
-    <div class="right mr20">
-        <div class="left "><label>Moy Consomation</label>
+        </td>
+        <td>
+            <label>Moy Consomation</label>
             <div class="field bordered">{{ $abonne->TELEPHONE_01 }}</div>
-        </div>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="row mb5">
-    <div class="left">
-        <div>
-            <div class="left mb5"><label>Der.Mut</label>
-                <div class="field bordered">{{ ' '}}</div>
-                <div class="field bordered">{{ '____/____/_______' }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="left "><label>Der.Mut</label>
-                <div class="field bordered">{{ ' ' }}</div>
-                <div class="field bordered">{{ '____/____/_______' }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
+        </td>
+    </tr>
+</table>
 
-    <div class="left " style="margin: 5px auto">
-        <div class="left bold ml20"><label>SOLDE</label>
+<!-- Mutations and Balance -->
+<table class="full-width mt10">
+    <tr>
+        <td width="33%">
+            <table class="full-width">
+                <tr>
+                    <td>
+                        <label>Der.Mut</label>
+                        <div class="field bordered">{{ ' '}}</div>
+                        <div class="field bordered">{{ '____/____/_______' }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Der.Mut</label>
+                        <div class="field bordered">{{ ' ' }}</div>
+                        <div class="field bordered">{{ '____/____/_______' }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td width="33%" class="center">
+            <label class="bold">SOLDE</label>
             <div class="field bordered">{{ $abonne->SOLDE }}</div>
-        </div>
-    </div>
-    <div class="right">
-        <div>
-            <div class="left mb5"><label>Qte Estim</label>
-                <div class="field bordered">{{ $abonne->QTE_ESTIMEE }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="left "><label>MT  Estim</label>
-                <div class="field bordered">{{ $abonne->MONTANT_ESTIME  }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="row" style="margin-top: 25px">
-    <div class="left">
-        <div>
-            <div class="left mb5"><label style="width: 80px">Ancien Compteur (FAB) </label>
-                <div class="field bordered">{{  $abonne->ETAT_ABONNE == 3? '999999': $abonne->COMPTEUR}}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="left " ><label style="width: 80px">Type Compteur (M / T) </label>
-                <div class="field bordered">{{ substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M' }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
-    <div class="left">
-        <div>
-            <div class="left mb5"><label style="width: 80px">INDEX (FAB) </label>
-                <div class="field bordered">{{ $abonne->INDEXE}}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="left " ><label style="width: 80px">INDEX POSE </label>
-                <div class="emptyfield bordered">{{ ' ' }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
+        </td>
+        <td width="33%">
+            <table class="full-width">
+                <tr>
+                    <td>
+                        <label>Qte Estim</label>
+                        <div class="field bordered">{{ $abonne->QTE_ESTIMEE }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>MT Estim</label>
+                        <div class="field bordered">{{ $abonne->MONTANT_ESTIME }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 
-    <div class="right">
-        <div class="mb5">
-            <div class="right "><label>PS (FAB) </label>
-                <div class="field bordered">{{ $abonne->PS}}</div>
-            </div>
-            <div class="right"><label>TARIF (FAB) </label>
-                <div class="field bordered">{{ (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF) }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div>
-            <div class="right bold" ><label>PS SITE </label>
-                <div class="emptyfield bordered">{{ ' ' }}</div>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="row">
-    <img style="width: 100%;margin-top:20px" src="{{public_path('images/image.png')}}" alt="">
-</div>
+<!-- Counter Information -->
+<table class="full-width mt25">
+    <tr>
+        <td width="33%">
+            <table class="full-width">
+                <tr>
+                    <td>
+                        <label style="width: 80px">Ancien Compteur (FAB)</label>
+                        <div class="field bordered">{{  $abonne->ETAT_ABONNE == 3? '999999': $abonne->COMPTEUR}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="width: 80px">Type Compteur (M / T)</label>
+                        <div class="field bordered">{{ substr($abonne->CODE_BRANCHEMENT, 0, 1) == '4' ? 'T':'M' }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td width="33%">
+            <table class="full-width">
+                <tr>
+                    <td>
+                        <label style="width: 80px">INDEX (FAB)</label>
+                        <div class="field bordered">{{ $abonne->INDEXE}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="width: 80px">INDEX POSE</label>
+                        <div class="emptyfield bordered">{{ ' ' }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td width="33%">
+            <table class="full-width">
+                <tr>
+                    <td>
+                        <label>PS (FAB)</label>
+                        <div class="field bordered">{{ $abonne->PS}}</div>
+                    </td>
+                    <td>
+                        <label>TARIF (FAB)</label>
+                        <div class="field bordered">{{ (!isset($abonne->TARIF)||(trim($abonne->TARIF)=='')) ?  '5106' : trim($abonne->TARIF) }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label class="bold">PS SITE</label>
+                        <div class="emptyfield bordered">{{ ' ' }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Image -->
+<table class="full-width">
+    <tr>
+        <td>
+            <img style="width: 100%;margin-top:20px" src="{{public_path('images/image.png')}}" alt="">
+        </td>
+    </tr>
+</table>

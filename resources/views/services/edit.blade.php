@@ -117,8 +117,17 @@
                                             </div>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="admin_received" name="admin_received" {{ old('admin_received', $service->admin_received) ? 'checked' : '' }}>
+                                            <input type="hidden" name="admin_received" value="0">
+                                            <input type="checkbox" 
+                                                   class="form-check-input @error('admin_received') is-invalid @enderror" 
+                                                   id="admin_received" 
+                                                   name="admin_received" 
+                                                   value="1"
+                                                   {{ old('admin_received', $service->admin_received) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="admin_received">Admin reçu</label>
+                                            @error('admin_received')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>

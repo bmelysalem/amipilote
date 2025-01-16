@@ -2,6 +2,16 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
+                @if ($errors->any())
+                    <div class="alert alert-danger mb-3">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">Créer un nouveau service</h5>
@@ -91,14 +101,26 @@
                                     <h5>Paramètres additionnels</h5>
                                     <div class="d-flex gap-3">
                                         <div class="form-check">
-                                            <input class="form-check-input @error('is_api') is-invalid @enderror" type="checkbox" id="is_api" name="is_api" {{ old('is_api') ? 'checked' : '' }}>
+                                            <input type="hidden" name="is_api" value="0">
+                                            <input type="checkbox" 
+                                                   class="form-check-input @error('is_api') is-invalid @enderror" 
+                                                   id="is_api" 
+                                                   name="is_api" 
+                                                   value="1"
+                                                   {{ old('is_api') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="is_api">Service API</label>
                                             @error('is_api')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input @error('admin_received') is-invalid @enderror" type="checkbox" id="admin_received" name="admin_received" {{ old('admin_received') ? 'checked' : '' }}>
+                                            <input type="hidden" name="admin_received" value="0">
+                                            <input type="checkbox" 
+                                                   class="form-check-input @error('admin_received') is-invalid @enderror" 
+                                                   id="admin_received" 
+                                                   name="admin_received" 
+                                                   value="1"
+                                                   {{ old('admin_received') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="admin_received">Admin reçu</label>
                                             @error('admin_received')
                                                 <div class="invalid-feedback">{{ $message }}</div>

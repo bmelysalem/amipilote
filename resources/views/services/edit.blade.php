@@ -102,8 +102,19 @@
                                     <h5>Paramètres additionnels</h5>
                                     <div class="d-flex gap-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="is_api" name="is_api" {{ old('is_api', $service->is_api) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="is_api">Service API</label>
+                                            <div class="form-check">
+                                                <input type="hidden" name="is_api" value="0">
+                                                <input type="checkbox" 
+                                                       class="form-check-input @error('is_api') is-invalid @enderror" 
+                                                       id="is_api" 
+                                                       name="is_api" 
+                                                       value="1"
+                                                       {{ old('is_api', $service->is_api) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="is_api">Est une API</label>
+                                                @error('is_api')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="admin_received" name="admin_received" {{ old('admin_received', $service->admin_received) ? 'checked' : '' }}>

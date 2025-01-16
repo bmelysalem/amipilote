@@ -42,6 +42,8 @@ class ServiceController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
+        $validated['is_api'] = $request->has('is_api');
+
         Service::create($validated);
         return redirect()->route('services.index')->with('success', 'Service ajouté avec succès.');
     }
@@ -79,6 +81,8 @@ class ServiceController extends Controller
             'admin_received' => 'nullable|boolean',
             'description' => 'nullable|string|max:255',
         ]);
+
+        $validated['is_api'] = $request->has('is_api');
 
         $service->update($validated);
         return redirect()->route('services.index')->with('success', 'Service mis à jour avec succès.');

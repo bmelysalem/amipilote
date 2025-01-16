@@ -16,21 +16,30 @@
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="libelle">Libellé</label>
-                                        <input type="text" class="form-control" id="libelle" name="libelle" value="{{ old('libelle', $service->libelle) }}" required>
+                                        <input type="text" class="form-control @error('libelle') is-invalid @enderror" id="libelle" name="libelle" value="{{ old('libelle', $service->libelle) }}" required>
+                                        @error('libelle')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="groupe">Groupe</label>
-                                        <input type="text" class="form-control" id="groupe" name="groupe" value="{{ old('groupe', $service->groupe) }}" required>
+                                        <input type="text" class="form-control @error('groupe') is-invalid @enderror" id="groupe" name="groupe" value="{{ old('groupe', $service->groupe) }}" required>
+                                        @error('groupe')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea class="form-control" id="description" name="description" rows="3">{{ old('description', $service->description) }}</textarea>
+                                        <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description', $service->description) }}</textarea>
+                                        @error('description')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -38,7 +47,10 @@
                                     <h5>Informations réseau internes</h5>
                                     <div class="form-group mb-3">
                                         <label for="ip_interne">IP interne</label>
-                                        <input type="text" class="form-control" id="ip_interne" name="ip_interne" value="{{ old('ip_interne', $service->ip_interne) }}">
+                                        <input type="text" class="form-control @error('ip_interne') is-invalid @enderror" id="ip_interne" name="ip_interne" value="{{ old('ip_interne', $service->ip_interne) }}">
+                                        @error('ip_interne')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="port_interne">Port interne</label>

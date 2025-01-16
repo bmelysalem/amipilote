@@ -2,6 +2,16 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
+                @if ($errors->any())
+                    <div class="alert alert-danger mb-3">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">Modifier le service</h5>

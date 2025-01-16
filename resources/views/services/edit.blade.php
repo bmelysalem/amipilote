@@ -64,7 +64,10 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="port_interne">Port interne</label>
-                                        <input type="text" class="form-control" id="port_interne" name="port_interne" value="{{ old('port_interne', $service->port_interne) }}">
+                                        <input type="text" class="form-control @error('port_interne') is-invalid @enderror" id="port_interne" name="port_interne" value="{{ old('port_interne', $service->port_interne) }}">
+                                        @error('port_interne')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -72,15 +75,24 @@
                                     <h5>Informations réseau externes</h5>
                                     <div class="form-group mb-3">
                                         <label for="ip_publique">IP publique</label>
-                                        <input type="text" class="form-control" id="ip_publique" name="ip_publique" value="{{ old('ip_publique', $service->ip_publique) }}">
+                                        <input type="text" class="form-control @error('ip_publique') is-invalid @enderror" id="ip_publique" name="ip_publique" value="{{ old('ip_publique', $service->ip_publique) }}">
+                                        @error('ip_publique')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="port_externe">Port externe</label>
-                                        <input type="text" class="form-control" id="port_externe" name="port_externe" value="{{ old('port_externe', $service->port_externe) }}">
+                                        <input type="text" class="form-control @error('port_externe') is-invalid @enderror" id="port_externe" name="port_externe" value="{{ old('port_externe', $service->port_externe) }}">
+                                        @error('port_externe')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="adresse_dns">Adresse DNS</label>
-                                        <input type="text" class="form-control" id="adresse_dns" name="adresse_dns" value="{{ old('adresse_dns', $service->adresse_dns) }}">
+                                        <input type="text" class="form-control @error('adresse_dns') is-invalid @enderror" id="adresse_dns" name="adresse_dns" value="{{ old('adresse_dns', $service->adresse_dns) }}">
+                                        @error('adresse_dns')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

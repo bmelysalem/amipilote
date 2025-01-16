@@ -13,6 +13,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('programmes/{programme}/download-fiches2', [App\Http\Controllers\ProgrammesDetController::class, 'downloadFiches'])->name('download-fiches2');
     Route::get('programmes/{programme}/download-table', [App\Http\Controllers\ProgrammesDetController::class, 'downloadTable'])->name('download-table');
     Route::resource('programmes', App\Http\Controllers\ProgrammesController::class);
+    Route::resource('services', App\Http\Controllers\ServiceController::class);
     Route::get('/search-abonnees', [App\Http\Controllers\AbonnesController::class, 'search'])->name('search.abonnees');
     Route::post('/programmes/{programme}/add-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addProgrammeDet'])->name('add.programmedet');
     Route::post('/programmes/{programme}/add-all-programmedet', [App\Http\Controllers\ProgrammesController::class, 'addAllProgrammesDet'])->name('add.all.programmedet');

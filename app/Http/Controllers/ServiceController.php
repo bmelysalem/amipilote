@@ -71,8 +71,8 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'groupe' => 'nullable|string|max:255',
             'libelle' => 'required|string|max:255',
-            'port_interne' => 'nullable|integer',
-            'port_externe' => 'nullable|integer',
+            'port_interne' => 'nullable|string',
+            'port_externe' => 'nullable|string',
             'ip_interne' => 'nullable|string|max:255',
             'ip_publique' => 'nullable|string|max:255',
             'adresse_dns' => 'nullable|string|max:255',

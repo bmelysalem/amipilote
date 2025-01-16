@@ -37,8 +37,8 @@ class ServiceController extends Controller
             'ip_publique' => 'nullable|string|max:255',
             'adresse_dns' => 'nullable|string|max:255',
             'image_icon' => 'nullable|string|max:255',
-            'is_api' => 'required|boolean',
-            'admin_received' => 'required|boolean',
+            'is_api' => 'nullable|boolean',
+            'admin_received' => 'nullable|boolean',
             'description' => 'nullable|string|max:255',
         ]);
 
@@ -75,8 +75,8 @@ class ServiceController extends Controller
             'ip_publique' => 'nullable|string|max:255',
             'adresse_dns' => 'nullable|string|max:255',
             'image_icon' => 'nullable|string|max:255',
-            'is_api' => 'required|boolean',
-            'admin_received' => 'required|boolean',
+            'is_api' => 'nullable|boolean',
+            'admin_received' => 'nullable|boolean',
             'description' => 'nullable|string|max:255',
         ]);
 

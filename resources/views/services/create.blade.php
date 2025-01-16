@@ -109,7 +109,7 @@
                                                    value="1"
                                                    {{ old('is_api') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="is_api">Service API</label>
-                                            @error('is_api')
+                                            @error('is api')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -122,7 +122,7 @@
                                                    value="1"
                                                    {{ old('admin_received') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="admin_received">Admin reçu</label>
-                                            @error('admin_received')
+                                            @error('admin received')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>

@@ -82,8 +82,6 @@ class ServiceController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        $validated['is_api'] = $request->has('is_api');
-
         $service->update($validated);
         return redirect()->route('services.index')->with('success', 'Service mis à jour avec succès.');
     }

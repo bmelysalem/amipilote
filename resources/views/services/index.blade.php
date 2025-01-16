@@ -17,6 +17,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nom du Service</th>
+                                <th>Adresse Ip</th>
                                 <th>Description</th>
                                 <th>Actions</th>
                             </tr>
@@ -26,6 +27,7 @@
                             <tr>
                                 <td>{{ $service->id }}</td>
                                 <td>{{ $service->groupe }} : {{ $service->libelle }}</td>
+                                <td>{{ $service->ip_interne }} : {{ $service->port_interne }}</td>
                                 <td>{{ $service->description }}</td>
                                 <td>
                                     <a href="{{ route('services.show', $service->id) }}" class="btn btn-info">Voir</a>

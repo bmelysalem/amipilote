@@ -25,7 +25,7 @@
                             @foreach($services as $service)
                             <tr>
                                 <td>{{ $service->id }}</td>
-                                <td>{{ $service->nom }}</td>
+                                <td>{{ $service->groupe }} : {{ $service->libelle }}</td>
                                 <td>{{ $service->description }}</td>
                                 <td>
                                     <a href="{{ route('services.show', $service->id) }}" class="btn btn-info">Voir</a>

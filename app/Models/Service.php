@@ -19,5 +19,6 @@ class Service extends Model
         'image_icon',
         'is_api',
         'admin_received',
+        'description',
     ];
 }

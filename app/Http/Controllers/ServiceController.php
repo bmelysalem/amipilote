@@ -39,6 +39,7 @@ class ServiceController extends Controller
             'image_icon' => 'nullable|string|max:255',
             'is_api' => 'required|boolean',
             'admin_received' => 'required|boolean',
+            'description' => 'nullable|string|max:255',
         ]);
 
         Service::create($validated);
@@ -76,6 +77,7 @@ class ServiceController extends Controller
             'image_icon' => 'nullable|string|max:255',
             'is_api' => 'required|boolean',
             'admin_received' => 'required|boolean',
+            'description' => 'nullable|string|max:255',
         ]);
 
         $service->update($validated);

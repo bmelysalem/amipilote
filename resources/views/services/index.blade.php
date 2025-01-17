@@ -11,9 +11,31 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <a href="{{ route('services.create') }}" class="btn btn-primary mb-4">Ajouter un Service</a>
 
+                    <!-- Onglets -->
+                    <div class="mb-4 border-b border-gray-200">
+                        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="serviceTabs" role="tablist">
+                            <li class="mr-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 rounded-t-lg active" 
+                                        id="all-tab" 
+                                        data-tab="all">
+                                    Tous
+                                </button>
+                            </li>
+                            @foreach($services->pluck('groupe')->unique() as $groupe)
+                                <li class="mr-2" role="presentation">
+                                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300"
+                                            id="{{ Str::slug($groupe) }}-tab"
+                                            data-tab="{{ Str::slug($groupe) }}">
+                                        {{ $groupe }}
+                                    </button>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($services as $service)
-                            <div class="card">
+                            <div class="card service-card" data-groupe="{{ Str::slug($service->groupe) }}">
                                 <div class="card-body">
                                     <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>
                                     <p class="card-text mb-2"><strong>ID:</strong> {{ $service->id }}</p>
@@ -39,4 +61,37 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('[data-tab]');
+            const cards = document.querySelectorAll('.service-card');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Retirer la classe active de tous les onglets
+                    tabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.classList.add('border-transparent');
+                    });
+
+                    // Ajouter la classe active à l'onglet cliqué
+                    tab.classList.add('active');
+                    tab.classList.remove('border-transparent');
+                    tab.classList.add('border-blue-600', 'text-blue-600');
+
+                    const selectedGroupe = tab.getAttribute('data-tab');
+
+                    // Afficher/masquer les cartes selon le groupe sélectionné
+                    cards.forEach(card => {
+                        if (selectedGroupe === 'all' || card.getAttribute('data-groupe') === selectedGroupe) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

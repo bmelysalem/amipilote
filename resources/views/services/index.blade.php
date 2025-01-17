@@ -38,6 +38,17 @@
                             <div class="card service-card flex flex-col h-full" data-groupe="{{ Str::slug($service->groupe) }}">
                                 <div class="card-body flex flex-col flex-grow">
                                     <div class="flex-grow">
+                                        <div class="mb-4 flex justify-center">
+                                            @if($service->image_icon)
+                                                <img src="{{ asset('storage/' . $service->image_icon) }}" 
+                                                     alt="Icône {{ $service->libelle }}"
+                                                     class="h-16 w-16 object-contain">
+                                            @else
+                                                <img src="{{ asset('images/default-service-icon.png') }}" 
+                                                     alt="Icône par défaut"
+                                                     class="h-16 w-16 object-contain">
+                                            @endif
+                                        </div>
                                         <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>
                                         <p class="card-text mb-2"><strong>ID:</strong> {{ $service->id }}</p>
                                         <p class="card-text mb-2"><strong>Adresse IP:</strong> {{ $service->ip_interne }}:{{ $service->port_interne }}</p>

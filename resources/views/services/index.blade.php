@@ -45,7 +45,10 @@
                                                      class="w-16 object-contain cursor-pointer hover:opacity-75 transition-opacity"
                                                      onclick="openImageModal('{{ asset('storage/' . $service->image_icon) }}', '{{ $service->libelle }}')">
                                             @else
-                                                <i class="fas fa-cogs text-6xl text-gray-400"></i>
+                                                <img src="{{ asset('images/default-service.png') }}" 
+                                                     alt="Image par défaut"
+                                                     class="w-16 object-contain cursor-pointer hover:opacity-75 transition-opacity"
+                                                     onclick="openImageModal('{{ asset('images/default-service.png') }}', 'Image par défaut')">
                                             @endif
                                         </div>
                                         <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>
@@ -81,12 +84,12 @@
     </div>
 
     <!-- Modal pour l'image -->
-    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="relative">
-            <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white text-xl hover:text-gray-300">
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="relative bg-white rounded-lg shadow-xl p-2">
+            <button onclick="closeImageModal()" class="absolute -top-4 -right-4 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-100">
                 <i class="fas fa-times"></i>
             </button>
-            <img id="modalImage" src="" alt="" class="max-h-[80vh] max-w-[90vw] object-contain">
+            <img id="modalImage" src="" alt="" class="max-h-[80vh] max-w-[80vw] object-contain">
         </div>
     </div>
 

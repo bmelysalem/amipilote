@@ -45,10 +45,10 @@
                                                      class="w-16 object-contain cursor-pointer hover:opacity-75 transition-opacity"
                                                      onclick="openImageModal('{{ asset('storage/' . $service->image_icon) }}', '{{ $service->libelle }}')">
                                             @else
-                                                <img src="{{ asset('images/default-service.png') }}" 
+                                                <img src="{{ asset('images/default-service-icon.png') }}" 
                                                      alt="Image par défaut"
                                                      class="w-16 object-contain cursor-pointer hover:opacity-75 transition-opacity"
-                                                     onclick="openImageModal('{{ asset('images/default-service.png') }}', 'Image par défaut')">
+                                                     onclick="openImageModal('{{ asset('images/default-service-icon.png') }}', 'Image par défaut')">
                                             @endif
                                         </div>
                                         <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>

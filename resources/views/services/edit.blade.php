@@ -33,6 +33,30 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12 mb-4">
+                                    <div class="form-group">
+                                        <label for="image_icon">Icône du service</label>
+                                        <div class="input-group">
+                                            <input type="file" 
+                                                   class="form-control @error('image_icon') is-invalid @enderror" 
+                                                   id="image_icon" 
+                                                   name="image_icon"
+                                                   accept="image/*">
+                                            @error('image_icon')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        @if($service->image_icon)
+                                            <div class="mt-2">
+                                                <p class="text-sm text-gray-600">Image actuelle :</p>
+                                                <img src="{{ asset('storage/' . $service->image_icon) }}" 
+                                                     alt="Icône actuelle" 
+                                                     class="mt-2 h-16 w-16 object-contain">
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="groupe">Groupe</label>

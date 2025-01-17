@@ -42,11 +42,10 @@
                                             @if($service->image_icon)
                                                 <img src="{{ asset('storage/' . $service->image_icon) }}" 
                                                      alt="Icône {{ $service->libelle }}"
-                                                     class="h-16 w-16 object-contain">
+                                                     class="w-16 object-contain cursor-pointer hover:opacity-75 transition-opacity"
+                                                     onclick="openImageModal('{{ asset('storage/' . $service->image_icon) }}', '{{ $service->libelle }}')">
                                             @else
-                                                <img src="{{ asset('images/default-service-icon.png') }}" 
-                                                     alt="Icône par défaut"
-                                                     class="h-16 w-16 object-contain">
+                                                <i class="fas fa-cogs text-6xl text-gray-400"></i>
                                             @endif
                                         </div>
                                         <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>
@@ -81,6 +80,16 @@
         </div>
     </div>
 
+    <!-- Modal pour l'image -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="relative">
+            <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white text-xl hover:text-gray-300">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImage" src="" alt="" class="max-h-[80vh] max-w-[90vw] object-contain">
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('[data-tab]');
@@ -112,5 +121,36 @@
                 });
             });
         });
+
+        function openImageModal(imageSrc, imageAlt) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            
+            modalImage.src = imageSrc;
+            modalImage.alt = imageAlt;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Fermer la modale en cliquant en dehors de l'image
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeImageModal();
+                }
+            }
+
+            // Fermer la modale avec la touche Echap
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeImageModal();
+                }
+            });
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
     </script>
 </x-app-layout>

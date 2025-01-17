@@ -45,14 +45,20 @@
                                     </div>
                                     
                                     <div class="flex space-x-2 mt-auto pt-4 border-t">
-                                        <a href="{{ route('services.show', $service->id) }}" class="btn btn-info">Voir</a>
-                                        <a href="{{ route('services.edit', $service->id) }}" class="btn btn-warning">Modifier</a>
+                                        <a href="{{ route('services.show', $service->id) }}" class="btn btn-info">
+                                            <i class="fas fa-eye mr-1"></i> Voir
+                                        </a>
+                                        <a href="{{ route('services.edit', $service->id) }}" class="btn btn-warning">
+                                            <i class="fas fa-edit mr-1"></i> Modifier
+                                        </a>
                                         <form action="{{ route('services.destroy', $service->id) }}"
                                             method="POST" style="display:inline;"
                                             onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce service ?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-trash-alt mr-1"></i> Supprimer
+                                            </button>
                                         </form>
                                     </div>
                                 </div>

@@ -35,14 +35,16 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($services as $service)
-                            <div class="card service-card" data-groupe="{{ Str::slug($service->groupe) }}">
-                                <div class="card-body">
-                                    <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>
-                                    <p class="card-text mb-2"><strong>ID:</strong> {{ $service->id }}</p>
-                                    <p class="card-text mb-2"><strong>Adresse IP:</strong> {{ $service->ip_interne }}:{{ $service->port_interne }}</p>
-                                    <p class="card-text mb-4"><strong>Description:</strong> {{ $service->description }}</p>
+                            <div class="card service-card flex flex-col h-full" data-groupe="{{ Str::slug($service->groupe) }}">
+                                <div class="card-body flex flex-col flex-grow">
+                                    <div class="flex-grow">
+                                        <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>
+                                        <p class="card-text mb-2"><strong>ID:</strong> {{ $service->id }}</p>
+                                        <p class="card-text mb-2"><strong>Adresse IP:</strong> {{ $service->ip_interne }}:{{ $service->port_interne }}</p>
+                                        <p class="card-text mb-4"><strong>Description:</strong> {{ $service->description }}</p>
+                                    </div>
                                     
-                                    <div class="flex space-x-2">
+                                    <div class="flex space-x-2 mt-auto pt-4 border-t">
                                         <a href="{{ route('services.show', $service->id) }}" class="btn btn-info">Voir</a>
                                         <a href="{{ route('services.edit', $service->id) }}" class="btn btn-warning">Modifier</a>
                                         <form action="{{ route('services.destroy', $service->id) }}"

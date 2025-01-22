@@ -69,9 +69,9 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        $validated = $request->validate([
-            'libelle' => 'required|string|max:255',
-            'groupe' => 'required|string|max:255',
+        $request->validate([
+            'groupe' => 'required',
+            'libelle' => 'required',
             'description' => 'nullable|string',
             'ip_interne' => 'nullable|string|max:255',
             'port_interne' => 'nullable|string|max:255',
@@ -80,8 +80,13 @@ class ServiceController extends Controller
             'adresse_dns' => 'nullable|string|max:255',
             'is_api' => 'boolean',
             'admin_received' => 'boolean',
-            'image_icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image_icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'documents.*.title' => 'nullable|required',
+            'documents.*.category' => 'nullable|required',
+            'documents.*.file' => 'nullable|file|mimes:pdf,docx,pptx,jpeg,png|max:2048',
         ]);
+
+        $service->update($request->all());
 
         if ($request->hasFile('image_icon')) {
             // Supprimer l'ancienne image si elle existe
@@ -91,13 +96,26 @@ class ServiceController extends Controller
             
             // Stocker la nouvelle image
             $path = $request->file('image_icon')->store('services/icons', 'public');
-            $validated['image_icon'] = $path;
+            $service->image_icon = $path;
+            $service->save();
         }
 
-        $service->update($validated);
+        // Gestion des documents
+        if ($request->has('documents')) {
+            foreach ($request->documents as $doc) {
+                if (isset($doc['file'])) {
+                    $filePath = $doc['file']->store('documents'); // Stockage du fichier
+                    $service->documents()->create([
+                        'title' => $doc['title'],
+                        'category' => $doc['category'],
+                        'file_path' => $filePath,
+                    ]);
+                } 
+            }
+        }
 
         return redirect()->route('services.show', $service)
-            ->with('success', 'Service mis à jour avec succès');
+            ->with('success', 'Service mis à jour avec succès.');
     }
 
     /**

@@ -21,4 +21,10 @@ class Service extends Model
         'admin_received',
         'description',
     ];
+
+    // Relation avec le modèle Document
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }

@@ -157,6 +157,23 @@
                                 </div>
                             </div>
 
+                            <div id="documents">
+                                <h3>Documents</h3>
+                                @foreach ($service->documents as $index => $document)
+                                    <div class="document">
+                                        <input type="text" name="documents[{{ $index }}][title]" value="{{ $document->title }}" placeholder="Titre" required>
+                                        <input type="text" name="documents[{{ $index }}][category]" value="{{ $document->category }}" placeholder="Catégorie" required>
+                                        <input type="file" name="documents[{{ $index }}][file]">
+                                        <input type="hidden" name="documents[{{ $index }}][id]" value="{{ $document->id }}">
+                                    </div>
+                                @endforeach
+                                <div class="document">
+                                    <input type="text" name="documents[new][title]" placeholder="Titre">
+                                    <input type="text" name="documents[new][category]" placeholder="Catégorie">
+                                    <input type="file" name="documents[new][file]">
+                                </div>
+                            </div>
+
                             <div class="mt-4">
                                 <a href="{{ route('services.show', $service) }}" class="btn btn-secondary">Annuler</a>
                                 <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>

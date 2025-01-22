@@ -62,7 +62,7 @@
                                                 @foreach($service->documents as $document)
                                                     <li>
                                                         <a href="{{ asset('storage/' . $document->file_path) }}" class="text-blue-600 hover:underline" target="_blank">
-                                                            {{ $document->name }}
+                                                            {{ $document->title }}
                                                         </a>
                                                     </li>
                                                 @endforeach

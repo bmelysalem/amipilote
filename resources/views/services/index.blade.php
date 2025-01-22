@@ -52,9 +52,22 @@
                                             @endif
                                         </div>
                                         <h5 class="card-title font-bold mb-2">{{ $service->groupe }} : {{ $service->libelle }}</h5>
-                                        <p class="card-text mb-2"><strong>ID:</strong> {{ $service->id }}</p>
                                         <p class="card-text mb-2"><strong>Adresse IP:</strong> {{ $service->ip_interne }}:{{ $service->port_interne }}</p>
                                         <p class="card-text mb-4"><strong>Description:</strong> {{ $service->description }}</p>
+                                        
+                                        <!-- Liste des documents à télécharger -->
+                                        <div class="mt-4">
+                                            <h6 class="font-semibold">Documents à télécharger :</h6>
+                                            <ul>
+                                                @foreach($service->documents as $document)
+                                                    <li>
+                                                        <a href="{{ asset('storage/' . $document->file_path) }}" class="text-blue-600 hover:underline" target="_blank">
+                                                            {{ $document->name }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     </div>
                                     
                                     <div class="flex space-x-2 mt-auto pt-4 border-t">

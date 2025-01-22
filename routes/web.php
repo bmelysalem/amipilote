@@ -25,6 +25,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/calculate-key', [App\Http\Controllers\KeyCalculationController::class, 'calculateForm']);
     Route::post('/calculate-key', [App\Http\Controllers\KeyCalculationController::class, 'calculate']);
 
+    //Documents routes
+    Route::put('/documents/{id}', [App\Http\Controllers\DocumentController::class, 'update'])->name('documents.update');
 });
 
 Route::get('/dashboard', function () {

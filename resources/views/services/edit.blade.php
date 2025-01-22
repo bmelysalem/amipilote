@@ -189,20 +189,31 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                <div class="document">
+                                    <input type="text" name="documents[new][title]" placeholder="Titre">
+                                    <input type="text" name="documents[new][category]" placeholder="CatÃ©gorie">
+                                    <input type="file" name="documents[new][file]">
+                                </div>
+                            </div>
 
-                                <script>
-                                    function confirmDelete(id) {
-                                        if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
-                                            // Logique pour supprimer le document
-                                            // Vous pouvez faire une requête AJAX ou rediriger vers une route de suppression
-                                        }
-                                    }
-
-                                    function openEditDialog(id) {
-                                        // Logique pour ouvrir un dialogue d'édition
-                                        // Vous pouvez utiliser un modal pour cela
-                                    }
-                                </script>
+                            <!-- Modal d'édition -->
+                            <div id="editModal" style="display:none;">
+                                <div class="modal-content">
+                                    <span class="close" onclick="closeEditDialog()">&times;</span>
+                                    <h2>Modifier le Document</h2>
+                                    <form id="editForm" method="POST" action="{{ route('documents.update', 'document_id') }}" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="id" id="editDocumentId">
+                                        <label for="editTitle">Titre:</label>
+                                        <input type="text" name="title" id="editTitle" required>
+                                        <label for="editCategory">Catégorie:</label>
+                                        <input type="text" name="category" id="editCategory" required>
+                                        <label for="editFile">Fichier:</label>
+                                        <input type="file" name="file" id="editFile">
+                                        <button type="submit">Sauvegarder</button>
+                                    </form>
+                                </div>
                             </div>
 
                             <div class="mt-4">
@@ -215,4 +226,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDelete(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
+                // Logique pour supprimer le document
+                // Vous pouvez faire une requête AJAX ou rediriger vers une route de suppression
+            }
+        }
+
+        function openEditDialog(id) {
+            // Récupérer les données du document à modifier
+            const documentRow = document.querySelector(`input[value="${id}"]`).closest('tr');
+            const title = documentRow.querySelector('input[name*="[title]"]').value;
+            const category = documentRow.querySelector('input[name*="[category]"]').value;
+
+            // Remplir le modal avec les données
+            document.getElementById('editTitle').value = title;
+            document.getElementById('editCategory').value = category;
+            document.getElementById('editDocumentId').value = id;
+
+            // Mettre à jour l'action du formulaire
+            document.getElementById('editForm').action = document.getElementById('editForm').action.replace('document_id', id);
+
+            // Afficher le modal
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditDialog() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+    </script>
 </x-app-layout>

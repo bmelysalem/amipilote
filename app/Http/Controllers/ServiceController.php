@@ -81,8 +81,8 @@ class ServiceController extends Controller
             'is_api' => 'boolean',
             'admin_received' => 'boolean',
             'image_icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'documents.*.title' => 'nullable|required',
-            'documents.*.category' => 'nullable|required',
+            'documents.*.title' => 'nullable',
+            'documents.*.category' => 'nullable',
             'documents.*.file' => 'nullable|file|mimes:pdf,docx,pptx,jpeg,png|max:2048',
         ]);
 
@@ -104,7 +104,18 @@ class ServiceController extends Controller
         if ($request->has('documents')) {
             foreach ($request->documents as $doc) {
                 if (isset($doc['file'])) {
-                    $filePath = $doc['file']->store('documents'); // Stockage du fichier
+                    if ($doc['file']->getSize() > 2 * 1024 * 1024 && $doc['file']->getClientOriginalExtension() === 'pdf') { // Vérifier si le fichier est un PDF et plus grand que 2 Mo
+                        $originalPath = $doc['file']->store('documents/originals'); // Stocker le fichier original
+                        $compressedPath = 'documents/compressed/' . uniqid() . '.pdf'; // Chemin pour le fichier compressé
+
+                        // Commande Ghostscript pour compresser le PDF
+                        $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH -sOutputFile=" . storage_path('app/' . $compressedPath) . " " . storage_path('app/' . $originalPath);
+                        exec($command);
+
+                        $filePath = $compressedPath; // Utiliser le chemin du fichier compressé
+                    } else {
+                        $filePath = $doc['file']->store('documents'); // Stockage du fichier
+                    }
                     $service->documents()->create([
                         'title' => $doc['title'],
                         'category' => $doc['category'],

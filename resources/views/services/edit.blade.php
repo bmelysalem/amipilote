@@ -159,19 +159,50 @@
 
                             <div id="documents">
                                 <h3>Documents</h3>
-                                @foreach ($service->documents as $index => $document)
-                                    <div class="document">
-                                        <input type="text" name="documents[{{ $index }}][title]" value="{{ $document->title }}" placeholder="Titre" required>
-                                        <input type="text" name="documents[{{ $index }}][category]" value="{{ $document->category }}" placeholder="Catégorie" required>
-                                        <input type="file" name="documents[{{ $index }}][file]">
-                                        <input type="hidden" name="documents[{{ $index }}][id]" value="{{ $document->id }}">
-                                    </div>
-                                @endforeach
-                                <div class="document">
-                                    <input type="text" name="documents[new][title]" placeholder="Titre">
-                                    <input type="text" name="documents[new][category]" placeholder="Catégorie">
-                                    <input type="file" name="documents[new][file]">
-                                </div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Titre</th>
+                                            <th>Catégorie</th>
+                                            <th>Fichier</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($service->documents as $index => $document)
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="documents[{{ $index }}][title]" value="{{ $document->title }}" placeholder="Titre" required>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="documents[{{ $index }}][category]" value="{{ $document->category }}" placeholder="Catégorie" required>
+                                                </td>
+                                                <td>
+                                                    <input type="file" name="documents[{{ $index }}][file]">
+                                                    <input type="hidden" name="documents[{{ $index }}][id]" value="{{ $document->id }}">
+                                                </td>
+                                                <td>
+                                                    <button type="button" onclick="confirmDelete({{ $document->id }})">Supprimer</button>
+                                                    <button type="button" onclick="openEditDialog({{ $document->id }})">Modifier</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                <script>
+                                    function confirmDelete(id) {
+                                        if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
+                                            // Logique pour supprimer le document
+                                            // Vous pouvez faire une requête AJAX ou rediriger vers une route de suppression
+                                        }
+                                    }
+
+                                    function openEditDialog(id) {
+                                        // Logique pour ouvrir un dialogue d'édition
+                                        // Vous pouvez utiliser un modal pour cela
+                                    }
+                                </script>
                             </div>
 
                             <div class="mt-4">

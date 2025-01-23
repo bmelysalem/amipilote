@@ -159,7 +159,7 @@
 
                             <div id="documents">
                                 <h3>Documents</h3>
-                                <table>
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Titre</th>
@@ -172,18 +172,18 @@
                                         @foreach ($service->documents as $index => $document)
                                             <tr>
                                                 <td>
-                                                    <input type="text" name="documents[{{ $index }}][title]" value="{{ $document->title }}" placeholder="Titre" required>
+                                                    <input type="text" name="documents[{{ $index }}][title]" value="{{ $document->title }}" placeholder="Titre" required class="form-control">
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="documents[{{ $index }}][category]" value="{{ $document->category }}" placeholder="Catégorie" required>
+                                                    <input type="text" name="documents[{{ $index }}][category]" value="{{ $document->category }}" placeholder="Catégorie" required class="form-control">
                                                 </td>
                                                 <td>
-                                                    <input type="file" name="documents[{{ $index }}][file]">
+                                                    <input type="file" name="documents[{{ $index }}][file]" class="form-control">
                                                     <input type="hidden" name="documents[{{ $index }}][id]" value="{{ $document->id }}">
                                                 </td>
                                                 <td>
-                                                    <button type="button" onclick="confirmDelete({{ $document->id }})">Supprimer</button>
-                                                    <button type="button" onclick="openEditDialog({{ $document->id }})">Modifier</button>
+                                                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $document->id }})">Supprimer</button>
+                                                    <button type="button" class="btn btn-warning" onclick="openEditDialog({{ $document->id }})">Modifier</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -204,7 +204,7 @@
                             </div>
                         </form>
                         <!-- Modal d'édition -->
-                        <div id="editModal" style="display:none;">
+                        <div id="editModal" class="modal" style="display:none;">
                                 <div class="modal-content">
                                     <span class="close" onclick="closeEditDialog()">&times;</span>
                                     <h2>Modifier le Document</h2>
@@ -212,13 +212,19 @@
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="id" id="editDocumentId">
-                                        <label for="editTitle">Titre:</label>
-                                        <input type="text" name="title" id="editTitle" required>
-                                        <label for="editCategory">Catégorie:</label>
-                                        <input type="text" name="category" id="editCategory" required>
-                                        <label for="editFile">Fichier:</label>
-                                        <input type="file" name="file" id="editFile">
-                                        <button type="submit">Sauvegarder</button>
+                                        <div class="form-group">
+                                            <label for="editTitle">Titre:</label>
+                                            <input type="text" name="title" id="editTitle" required class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editCategory">Catégorie:</label>
+                                            <input type="text" name="category" id="editCategory" required class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editFile">Fichier:</label>
+                                            <input type="file" name="file" id="editFile" class="form-control">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
                                     </form>
                                 </div>
                             </div>

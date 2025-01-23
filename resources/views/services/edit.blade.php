@@ -196,8 +196,15 @@
                                 </div>
                             </div>
 
-                            <!-- Modal d'édition -->
-                            <div id="editModal" style="display:none;">
+                            
+
+                            <div class="mt-4">
+                                <a href="{{ route('services.show', $service) }}" class="btn btn-secondary">Annuler</a>
+                                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                            </div>
+                        </form>
+                        <!-- Modal d'édition -->
+                        <div id="editModal" style="display:none;">
                                 <div class="modal-content">
                                     <span class="close" onclick="closeEditDialog()">&times;</span>
                                     <h2>Modifier le Document</h2>
@@ -215,12 +222,6 @@
                                     </form>
                                 </div>
                             </div>
-
-                            <div class="mt-4">
-                                <a href="{{ route('services.show', $service) }}" class="btn btn-secondary">Annuler</a>
-                                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

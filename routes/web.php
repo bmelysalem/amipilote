@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DocumentController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -27,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Documents routes
     Route::put('/documents/{id}', [App\Http\Controllers\DocumentController::class, 'update'])->name('documents.update');
+    Route::delete('/documents/{id}', [App\Http\Controllers\DocumentController::class, 'destroy'])->name('documents.destroy');
 });
 
 Route::get('/dashboard', function () {

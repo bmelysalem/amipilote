@@ -231,7 +231,25 @@
         function confirmDelete(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
                 // Logique pour supprimer le document
-                // Vous pouvez faire une requête AJAX ou rediriger vers une route de suppression
+                fetch(`/documents/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Supprimer la ligne du tableau
+                        const documentRow = document.querySelector(`input[value="${id}"]`).closest('tr');
+                        documentRow.remove();
+                    } else {
+                        alert('Erreur lors de la suppression du document.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
             }
         }
 

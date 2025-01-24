@@ -41,7 +41,7 @@ class DocumentController extends Controller
         $filePath = $document->file_path;
 
         // Update the path to download from the private storage
-        $filePath = storage_path('app/private/' . basename($filePath));
+        $filePath = storage_path('app/private/documents' . basename($filePath));
         return $filePath;
 
         return response()->download($filePath, basename($filePath));

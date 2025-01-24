@@ -37,6 +37,13 @@ class DocumentController extends Controller
     {
         $document = Document::findOrFail($id);
         
-        return response()->download($document->file_path, basename($document->file_path));
+        // Utiliser le chemin de fichier existant
+        $filePath = $document->file_path;
+
+        // Update the path to download from the private storage
+        $filePath = storage_path('app/private/' . basename($filePath));
+        return $filePath;
+
+        return response()->download($filePath, basename($filePath));
     }
 }

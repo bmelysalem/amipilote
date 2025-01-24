@@ -104,18 +104,9 @@ class ServiceController extends Controller
         if ($request->has('documents')) {
             foreach ($request->documents as $doc) {
                 if (isset($doc['file'])) {
-                    if ($doc['file']->getSize() > 2 * 1024 * 1024 && $doc['file']->getClientOriginalExtension() === 'pdf') { // Vérifier si le fichier est un PDF et plus grand que 2 Mo
-                        $originalPath = $doc['file']->store('documents/originals'); // Stocker le fichier original
-                        $compressedPath = 'documents/compressed/' . uniqid() . '.pdf'; // Chemin pour le fichier compressé
-
-                        // Commande Ghostscript pour compresser le PDF
-                        $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH -sOutputFile=" . storage_path('app/' . $compressedPath) . " " . storage_path('app/' . $originalPath);
-                        exec($command);
-
-                        $filePath = $compressedPath; // Utiliser le chemin du fichier compressé
-                    } else {
-                        $filePath = $doc['file']->store('documents'); // Stockage du fichier
-                    }
+                    
+                    $filePath = $doc['file']->store('documents'); // Stockage du fichier
+                    
                     $service->documents()->create([
                         'title' => $doc['title'],
                         'category' => $doc['category'],

@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     //Documents routes
     Route::put('/documents/{id}', [App\Http\Controllers\DocumentController::class, 'update'])->name('documents.update');
     Route::delete('/documents/{id}', [App\Http\Controllers\DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::get('/documents/stream/{id}', [App\Http\Controllers\DocumentController::class, 'stream'])->name('documents.stream');
 });
 
 Route::get('/dashboard', function () {

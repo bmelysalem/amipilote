@@ -61,7 +61,7 @@
                                             <ul>
                                                 @foreach($service->documents as $document)
                                                     <li>
-                                                        <a href="{{ route('documents.stream', $document->id) }}" class="text-blue-600 hover:underline" target="_blank">
+                                                        <a href="{{ route('documents.download', $document->id) }}" class="text-blue-600 hover:underline" target="_blank">
                                                             {{ $document->title }}
                                                         </a>
                                                     </li>

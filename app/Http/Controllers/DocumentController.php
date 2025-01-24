@@ -32,4 +32,11 @@ class DocumentController extends Controller
             'Content-Disposition' => 'attachment; filename="' . basename($document->file_path) . '"',
         ]);
     }
+
+    public function download($id)
+    {
+        $document = Document::findOrFail($id);
+        
+        return response()->download($document->file_path, basename($document->file_path));
+    }
 }

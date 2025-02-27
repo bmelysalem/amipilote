@@ -354,7 +354,7 @@
 
 
             function handleAddProgrammeDet(reference, solde, etatAbonne) {
-                if (solde > 0 && etatAbonne == 9) {
+                if (solde > 0 && etatAbonne == 3) {
                     if (confirm(`Le solde est positif: ${solde}. Voulez-vous continuer ?`)) {
                         addProgrammeDet(reference);
                     }

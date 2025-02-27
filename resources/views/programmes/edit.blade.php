@@ -287,7 +287,7 @@
                                 <td>${abonne.REFERENCE}</td>
                                 <td>${abonne.ADRESSE}</td>
                                 <td>${abonne.NOM}</td>
-                                <td><button type="button" onclick="addProgrammeDet('${abonne.REFERENCE}')" class="btn btn-success" style="border double 1px ${spanClass}">${spanLabel}</button></td>
+                                <td><button type="button" onclick="handleAddProgrammeDet('${abonne.REFERENCE}','${abonne.SOLDE}','${abonne.ETAT_ABONNE}')" class="btn btn-success" style="border double 1px ${spanClass}">${spanLabel}</button></td>
                             </tr>
                         `;
                                     if ((abonne.ETAT_ABONNE != 3) && (abonne.ETAT_ABONNE != 9)) {
@@ -353,7 +353,15 @@
             });
 
 
-
+            function handleAddProgrammeDet(reference, solde, etatAbonne) {
+                if (solde > 0 && etatAbonne == 9) {
+                    if (confirm(`Le solde est positif: ${solde}. Voulez-vous continuer ?`)) {
+                        addProgrammeDet(reference);
+                    }
+                } else {
+                    addProgrammeDet(reference);
+                }
+            }
             function addProgrammeDet(reference) {
                 var programmeId = {{ $programme->idprogrammes }}; // Assure-toi que tu as la variable programmeId
 

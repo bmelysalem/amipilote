@@ -138,7 +138,10 @@ class ProgrammesController extends Controller
         $programmesDet = ProgrammesDet::where('idprogrammes', $programmeId)->with('abonne')->get();
 
         foreach ($programmesDet as $detail) {
+            
             $abonne = $detail->abonne;
+            if ($abonne == null)
+                continue;
 
             // Vérifier l'état de l'abonné
             if (in_array($abonne->ETAT_ABONNE, [1, 4])) {
@@ -163,11 +166,11 @@ class ProgrammesController extends Controller
                     $changements->save();
                 }
 
-            } elseif (in_array($abonne->ETAT_ABONNE, [9, 3])) {
+            } elseif (in_array($abonne->ETAT_ABONNE, [9, 3, 5])) {
 
                 $reference = $abonne->REFERENCE;
                 // Si l'état est 3, utiliser `successeur` comme référence
-                if ($abonne->ETAT_ABONNE == 3) {
+                if (in_array($abonne->ETAT_ABONNE, [ 3, 5])) {
                     $reference = $abonne->successeur;
                 }
 

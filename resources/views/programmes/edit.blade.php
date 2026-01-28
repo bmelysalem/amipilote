@@ -261,7 +261,7 @@
                                             .ETAT_ABONNE == 4)) {
                                         spanLabel = 'Changement';
                                         spanClass = 'green';
-                                    } else if (abonne.ETAT_ABONNE == 3) {
+                                    } else if ((abonne.ETAT_ABONNE == 3) || (abonne.ETAT_ABONNE == 5))  {
                                         // Calculer ou récupérer le successeur
                                         ref = abonne.successeur;
 
@@ -290,7 +290,7 @@
                                 <td><button type="button" onclick="handleAddProgrammeDet('${abonne.REFERENCE}','${abonne.SOLDE}','${abonne.ETAT_ABONNE}')" class="btn btn-success" style="border double 1px ${spanClass}">${spanLabel}</button></td>
                             </tr>
                         `;
-                                    if ((abonne.ETAT_ABONNE != 3) && (abonne.ETAT_ABONNE != 9)) {
+                                    if ((abonne.ETAT_ABONNE != 3) && (abonne.ETAT_ABONNE != 5)  && (abonne.ETAT_ABONNE != 9)) {
                                         // Ajouter la référence de l'abonné dans le tableau
                                         abonnesReferences.push(abonne.REFERENCE);
                                     } // Ajouter la référence à la liste

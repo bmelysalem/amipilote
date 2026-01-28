@@ -48,7 +48,7 @@ class ProgrammesDet extends Model
 
         if ($abonne) {
             // Si l'état est 3, utiliser `successeur` pour rechercher dans Nouvabnt
-            $reference = $abonne->ETAT_ABONNE == 3 ? $abonne->successeur : $this->REFERENCE;
+            $reference = ($abonne->ETAT_ABONNE == 3 || $abonne->ETAT_ABONNE == 5 )? $abonne->successeur : $this->REFERENCE;
 
             // Rechercher dans Nouvabnt avec la référence appropriée
             return Nouvabnt::where('REFERENCE', $reference)->first();

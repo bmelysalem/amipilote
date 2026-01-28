@@ -245,7 +245,7 @@ class ProgrammesController extends Controller
             if ($abonne) {
                 // Verification si l'abbonné est resilié a un solde
                 // Retourner les erreurs de validation si elles existent
-                if ($abonne->ETAT_ABONNE == 3 && $abonne->solde > 0)
+                if (($abonne->ETAT_ABONNE == 3 || $abonne->ETAT_ABONNE == 5)  && $abonne->solde > 10000)
                     return response()->json([
                         'success' => false,
                         'message' => 'Abonnée est resilié avec solde :' . $abonne->solde,
